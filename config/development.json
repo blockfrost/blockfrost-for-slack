@@ -1,0 +1,6 @@
+{
+    "db": {
+        "connectionString": "postgres://maros:@localhost:5432/slack",
+        "ssl": false
+    }
+}
