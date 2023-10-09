@@ -147,7 +147,13 @@ Retrieve information about the stake address.
 
 #### `/block [<hash-or-number>] [--network (mainnet | preview | preprod)] [--json]`
 
-Retrieve content of the block.
+The output of the `/block [<hash-or-number>]` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
+
+When `hash-or-number` is omitted, information about latest block is retrieved.
+
+The output will include block hash, timestamp when the block was added to the chain, its block height within the blockchain, epoch and slot within that epoch, number of confirmations for the block, the total number of transactions included in the block, block size, pool that minted the block and total output and fees.
+
+Button "Show in Explorer" will redirect the user to an external blockchain explorer web page to provide more details about the block.
 
 #### `/tx <hash> [--network (mainnet | preview | preprod)] [--json]`
 

@@ -10,6 +10,7 @@ import { registerLinkCommand } from './commands/link/link';
 import express from 'express';
 import { WebClient } from '@slack/web-api';
 import { logger } from './utils/logger';
+import { registerBlockCommand } from './commands/block/block';
 
 if (!process.env.SLACK_SIGNING_SECRET) {
   throw Error('Set env variable SLACK_SIGNING_SECRET');
@@ -97,6 +98,7 @@ expressReceiver.router.post('/webhook-slack/:installation', express.json(), asyn
 registerLinkCommand(app);
 registerTxCommand(app);
 registerAssetCommand(app);
+registerBlockCommand(app);
 
 (async () => {
   // Start your app

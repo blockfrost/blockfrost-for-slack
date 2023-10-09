@@ -20,7 +20,7 @@ export class BlockfrostClient {
   };
 
   getBlock = async (hashOrNumber?: string | number) => {
-    return hashOrNumber === undefined
+    return hashOrNumber === undefined || hashOrNumber === ''
       ? this.client.blocksLatest()
       : this.client.blocks(hashOrNumber);
   };
