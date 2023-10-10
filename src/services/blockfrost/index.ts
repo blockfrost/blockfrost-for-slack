@@ -15,8 +15,19 @@ export class BlockfrostClient {
   }
 
   getAccount = async (stakeAccount: string) => {
-    const res = await this.client.accounts(stakeAccount);
-    return res;
+    const account = await this.client.accounts(stakeAccount);
+    const withdrawals = await this.client.accountsWithdrawals(stakeAccount, {
+      order: 'desc',
+      count: 5,
+    });
+    const withdrawalsTxs = await Promise.all(withdrawals.map(w => this.client.txs(w.tx_hash)));
+    const withdrawalsWithTimestamp = withdrawals.map((w, index) => ({
+      ...w,
+      block_time: withdrawalsTxs[index].block_time,
+    }));
+
+    const pool = account.pool_id ? await this.client.poolMetadata(account.pool_id) : null;
+    return { account, withdrawals: withdrawalsWithTimestamp, pool };
   };
 
   getAddress = async (address: string) => {
@@ -42,7 +53,9 @@ export class BlockfrostClient {
   getPool = async (poolId: string) => {
     try {
       const pool = await this.client.poolsById(poolId);
-      return pool;
+      const metadata = await this.client.poolMetadata(poolId);
+
+      return { pool, metadata };
     } catch (error) {
       if (error instanceof Error) {
         console.error(`Failed to fetch pool ${poolId}`, error.message);

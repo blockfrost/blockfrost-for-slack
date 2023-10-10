@@ -10,6 +10,8 @@ import { registerBlockCommand } from './commands/block/block';
 import { registerAddressCommand } from './commands/address/address';
 import { registerWelcomeMessage } from './events/welcome-message';
 import { registerWebhookEndpoint } from './events/webhook-endpoint';
+import { registerAccountCommand } from './commands/account/account';
+import { registerPoolCommand } from './commands/pool/pool';
 
 if (!process.env.SLACK_SIGNING_SECRET) {
   throw Error('Set env variable SLACK_SIGNING_SECRET');
@@ -52,6 +54,8 @@ registerTxCommand(app);
 registerAssetCommand(app);
 registerBlockCommand(app);
 registerAddressCommand(app);
+registerAccountCommand(app);
+registerPoolCommand(app);
 
 registerWelcomeMessage(app);
 registerWebhookEndpoint(expressReceiver);

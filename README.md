@@ -102,6 +102,17 @@ Upon successful installation, the app will post welcome message wih a brief inst
 
 ### Available commands
 
+Here's quick overview of available commands:
+
+- `/link project`
+- `/link webhook`
+- `/account`
+- `/address`
+- `/asset`
+- `/block`
+- `/pool`
+- `/tx`
+
 #### `/link project [<PROJECT_ID>]`
 
 Register Blockfrost project to enable querying data directly within the Slack App. User can register one project for each network (mainnet, preview, preprod).
@@ -129,17 +140,25 @@ After user enters the command a modal will show up with following elements:
 Upon successful linking, a message appears saying, "Webhook successfully linked!"
 If the linking fails, an error message appears saying, "Failed to link the webhook. Please try again."
 
-#### `/asset <hex-or-bech32> [--network (mainnet | preview | preprod)] [--json]`
+#### `/account <bech32 stake address> [--network (mainnet | preview | preprod)] [--json]`
 
-The output of the `/asset <hash>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
+The output of the `/account <bech32 stake address>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
 
-The output will include asset information such as asset hex, fingerprint, hash of initial mint transaction, policy ID, asset name, quantity, mint and burn count and also on-chain and off-chain metadata. If an image exists in the asset metadata, it will be rendered alongside these details.
+The output will include:
 
-Button "Show in Explorer" will redirect the user to an external blockchain explorer web page to provide more details about the asset.
+- Stake address itself
+- Total controlled stake
+- Rewards withdrawn
+- Rewards available
+- Stake pool where the account is delegating to
+- The last five withdrawals, with each transaction displaying the timestamp, the tx hash and the amount withdrawn
+- Buttons
+  - "Open in Explorer" - Redirects the user to an external blockchain explorer web page to provide more details about the stake Account.
+  - "Show Stake Pool" - Displays more information about the stake pool
 
 #### `/address <bech32 address> [--network (mainnet | preview | preprod)] [--json]`
 
-The output of the `/address <hash>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
+The output of the `/address <bech32 address>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
 
 The output will include:
 
@@ -150,9 +169,22 @@ The output will include:
 - The five largest assets (ranked by the quantity held)
 - The last five transactions, with each transaction displaying the timestamp and transaction hash
 
-#### `/account <bech32 stake address> [--network (mainnet | preview | preprod)] [--json]`
+#### `/asset <hex-or-bech32> [--network (mainnet | preview | preprod)] [--json]`
 
-Retrieve information about the stake address.
+The output of the `/asset <hash>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
+
+The output will include:
+
+- asset hex
+- asset fingerprint
+- hash of initial mint transaction
+- policy ID and asset name
+- quantity
+- mint and burn count
+- on-chain and off-chain metadata
+- if an image exists in the asset metadata, it will be rendered alongside these details.
+
+Button "Open in Explorer" will redirect the user to an external blockchain explorer web page to provide more details about the asset.
 
 #### `/block [<hash-or-number>] [--network (mainnet | preview | preprod)] [--json]`
 
@@ -160,9 +192,38 @@ The output of the `/block [<hash-or-number>]` command, when invoked without the 
 
 When `hash-or-number` is omitted, information about latest block is retrieved.
 
-The output will include block hash, timestamp when the block was added to the chain, its block height within the blockchain, epoch and slot within that epoch, number of confirmations for the block, the total number of transactions included in the block, block size, pool that minted the block and total output and fees.
+The output will include:
 
-Button "Show in Explorer" will redirect the user to an external blockchain explorer web page to provide more details about the block.
+- block hash
+- timestamp when the block was added to the chain
+- its block height within the blockchain
+- epoch and slot within that epoch
+- number of confirmations for the block
+- the total number of transactions included in the block
+- block size
+- pool that minted the block
+- total output and fees
+
+Button "Open in Explorer" will redirect the user to an external blockchain explorer web page to provide more details about the block.
+
+#### `/pool <pool_id> [--network (mainnet | preview | preprod)] [--json]`
+
+The output of the `/pool <pool_id>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
+
+The output will include:
+
+- Pool ID itself
+- Name of the pool if pool's metadata are available
+- URL to the pool's website if pool's metadata are available
+- Number of minted blocks
+- Number of delegators
+- Fixed cost and Margin
+- Committed pledge and active pledge
+- Saturation and live stake
+- Rewards account address
+- Owners account addresses
+- Buttons
+  - "Open in Explorer" - Redirects the user to an external blockchain explorer web page to provide more details about the stake pool.
 
 #### `/tx <hash> [--network (mainnet | preview | preprod)] [--json]`
 
@@ -174,9 +235,23 @@ The output of the `/tx <hash>` command, when invoked without the `--json` parame
 4. Total Output and Size - Shows the total amount of ADA sent in the transaction and the size of the transaction in bytes.
 5. Certificates and Mints/Burns - Shows the number of different types of certificates involved in the transaction (stake, delegation, pool updates, and pool retirements), as well as any asset minting or burning activities.
 6. Actions - This last section provides users with a set of interactive buttons to delve further into various aspects of the transaction
-   1. Show Metadata - Shows transaction metadata
-   2. Show UTXOs - Shows inputs and outputs associated with this transaction.
-   3. Open in Explorer - Redirects the user to an external blockchain explorer web page that shows comprehensive details about the transaction
+   - "Show Metadata" - Shows transaction metadata
+   - "Show UTXOs" - Shows inputs and outputs associated with this transaction.
+   - "Open in Explorer" - Redirects the user to an external blockchain explorer web page that shows comprehensive details about the transaction
+
+#### Real-time notifications
+
+Users can configure real-time notifications through Blockfrost webhooks to stay updated on blockchain events. Here's how to set it up:
+
+1. Initialize Setup: Type the command `/link webhook` to trigger a configuration modal window. This modal will provide all the information you need to set up your webhook.
+
+2. Configure on Blockfrost Dashboard: Navigate to the Blockfrost Dashboard to select the events you'd like to subscribe to and specify any conditions that must be met for the notifications to trigger.
+
+3. Endpoint URL: Copy the URL provided in the Slack modal and paste it into the appropriate field on the Blockfrost Dashboard.
+
+4. Enter Credentials: Fill in the webhook identifier and authentication token into the modal's input fields and save the configuration.
+
+Once configured, any event meeting the criteria will automatically post notifications to the Slack channel where the webhook is linked.
 
 ## Backend
 

@@ -17,7 +17,7 @@ export const formatAssetDecimals = (quantity: number | string, decimals: number 
     );
   }
 
-  return (quantity / 10) ^ decimals;
+  return quantity / 10 ** decimals;
 };
 
 export const lovelaceToAda = (lovelace: number | string) => {

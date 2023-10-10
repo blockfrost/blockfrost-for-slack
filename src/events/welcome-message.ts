@@ -81,7 +81,7 @@ export const registerWelcomeMessage = (app: App<StringIndexed>) => {
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: '- To fetch a block: `/block [<hash-or-number>]`\n- To fetch a transaction: `/tx <hash>`\n- To fetch an asset: `/asset <hex-or-bech32>`\n- To fetch an address: `/address <bech32 address>`\n- To fetch an account: `/account <bech32 stake address>`\n\n*Additional Parameters:*\n- Use `--json` to get the output in JSON format.\n- Use `--network` to specify the blockchain network. For example, `/block <hash-or-number> --network testnet`.',
+                text: '- To fetch a block: `/block [<hash-or-number>]`\n- To fetch a transaction: `/tx <hash>`\n- To fetch an asset: `/asset <hex-or-bech32>`\n- To fetch an address: `/address <bech32 address>`\n- To fetch an account: `/account <bech32 stake address>\n- To fetch a pool: `/pool <poolId>`\n\n*Additional Parameters:*\n- Use `--json` to get the output in JSON format.\n- Use `--network` to specify the blockchain network. For example, `/block <hash-or-number> --network testnet`.',
               },
             },
             {

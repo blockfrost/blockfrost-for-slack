@@ -1,11 +1,6 @@
 import { Responses } from '@blockfrost/blockfrost-js';
 import { SayArguments } from '@slack/bolt';
-import {
-  formatUnixTimestamp,
-  formatAssetDecimals,
-  truncateLongStrings,
-  lovelaceToAda,
-} from '../../../utils/formatting';
+import { formatUnixTimestamp, truncateLongStrings, lovelaceToAda } from '../../../utils/formatting';
 import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
 
 export const getTxView = (
