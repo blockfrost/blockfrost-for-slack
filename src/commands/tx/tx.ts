@@ -3,7 +3,7 @@ import { StringIndexed } from '@slack/bolt/dist/types/helpers';
 import messages from '../../messages';
 import { BlockfrostClient } from '../../services/blockfrost';
 import { initializeBlockfrostClient } from '../../utils/blockfrost';
-import { formatInputs, formatOutputs } from '../../utils/formatter';
+import { formatInputs, formatOutputs } from '../../utils/formatting';
 import { getTxMetadataView } from './views/tx-metadata';
 import { getTxView } from './views/tx';
 import { parseCommand } from '../../utils/command';

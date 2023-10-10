@@ -1,6 +1,11 @@
 import { Responses } from '@blockfrost/blockfrost-js';
 import { SayArguments } from '@slack/bolt';
-import { formatUnixTimestamp, lovelaceToAda, truncateLongStrings } from '../../../utils/formatter';
+import {
+  formatUnixTimestamp,
+  formatAssetDecimals,
+  truncateLongStrings,
+  lovelaceToAda,
+} from '../../../utils/formatting';
 import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
 
 export const getTxView = (
@@ -35,24 +40,11 @@ export const getTxView = (
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Timestamp:*\n${formatUnixTimestamp(tx.block_time)}`,
+              text: `*Timestamp:\n${formatUnixTimestamp(tx.block_time)}`,
             },
             {
               type: 'mrkdwn',
-              text: `*Block:*\n${tx.block_height}`,
-            },
-          ],
-        },
-        {
-          type: 'section',
-          fields: [
-            {
-              type: 'mrkdwn',
-              text: `*Slot:*\n${tx.slot}`,
-            },
-            {
-              type: 'mrkdwn',
-              text: `*Fees:*\n${lovelaceToAda(tx.fees)} ADA`,
+              text: `*Block:\n${tx.block_height}`,
             },
           ],
         },
@@ -61,13 +53,26 @@ export const getTxView = (
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Total Output:*\n${lovelaceToAda(
+              text: `*Slot:\n${tx.slot}`,
+            },
+            {
+              type: 'mrkdwn',
+              text: `*Fees:\n${lovelaceToAda(tx.fees)} ADA`,
+            },
+          ],
+        },
+        {
+          type: 'section',
+          fields: [
+            {
+              type: 'mrkdwn',
+              text: `*Total Output:\n${lovelaceToAda(
                 tx.output_amount.find(o => o.unit === 'lovelace')?.quantity ?? 0,
               )} ADA`,
             },
             {
               type: 'mrkdwn',
-              text: `*Size:*\n${tx.size} Bytes`,
+              text: `*Size:\n${tx.size} Bytes`,
             },
           ],
         },
@@ -76,7 +81,7 @@ export const getTxView = (
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Certificates:*\n${
+              text: `*Certificates:\n${
                 tx.stake_cert_count +
                 tx.delegation_count +
                 tx.pool_update_count +
@@ -85,7 +90,7 @@ export const getTxView = (
             },
             {
               type: 'mrkdwn',
-              text: `*Mints/Burns:*\n${tx.asset_mint_or_burn_count}`,
+              text: `*Mints/Burns:\n${tx.asset_mint_or_burn_count}`,
             },
           ],
         },

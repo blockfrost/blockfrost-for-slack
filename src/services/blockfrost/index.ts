@@ -14,6 +14,20 @@ export class BlockfrostClient {
     });
   }
 
+  getAccount = async (stakeAccount: string) => {
+    const res = await this.client.accounts(stakeAccount);
+    return res;
+  };
+
+  getAddress = async (address: string) => {
+    const addressData = await this.client.addressesExtended(address);
+    const transactions = await this.client.addressesTransactions(address, {
+      order: 'desc',
+      count: 5,
+    });
+    return { address: addressData, transactions };
+  };
+
   getAsset = async (asset: string) => {
     const res = await this.client.assetsById(asset);
     return res;

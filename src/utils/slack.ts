@@ -1,10 +1,11 @@
-import { Logger, SlackAction, SlackViewAction, SlashCommand } from '@slack/bolt';
+import { EnvelopedEvent, SlackAction, SlackViewAction, SlashCommand } from '@slack/bolt';
+import { logger as defaultLogger } from './logger';
 
 export const getInstallationId = (
-  commandOrAction: SlashCommand | SlackAction | SlackViewAction,
-  logger?: Logger,
+  commandOrAction: SlashCommand | SlackAction | SlackViewAction | EnvelopedEvent,
+  logger = defaultLogger,
 ) => {
-  if ('command' in commandOrAction) {
+  if ('enterprise_id' in commandOrAction || 'team_id' in commandOrAction) {
     const enterpriseId = commandOrAction.enterprise_id;
     const teamId = commandOrAction.team_id;
     const installationId = enterpriseId ?? teamId;
@@ -15,7 +16,7 @@ export const getInstallationId = (
     const installationId = enterpriseId ?? teamId;
 
     if (!installationId) {
-      logger?.error(`Could not retrieve installation id.`, commandOrAction);
+      logger?.error(`Could not extract installation id.`, commandOrAction);
       throw Error(`ERR_UNKNOWN_INSTALLATION_ID`);
     }
 

@@ -1,6 +1,6 @@
 import { Responses } from '@blockfrost/blockfrost-js';
 import { SayArguments } from '@slack/bolt';
-import { truncateLongStrings } from '../../../utils/formatter';
+import { truncateLongStrings } from '../../../utils/formatting';
 import { logger } from '../../../utils/logger';
 
 export const isResourceUriSupported = (uri: string) => {
@@ -101,7 +101,7 @@ export const getAssetView = (asset: Responses['asset'], jsonMode?: boolean): Say
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `*Fingerprint:*\n\`${asset.fingerprint}\``,
+            text: `*Fingerprint:\n\`${asset.fingerprint}\``,
           },
         },
         {
@@ -109,11 +109,11 @@ export const getAssetView = (asset: Responses['asset'], jsonMode?: boolean): Say
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Policy:*\n\`${asset.policy_id}\``,
+              text: `*Policy:\n\`${asset.policy_id}\``,
             },
             {
               type: 'mrkdwn',
-              text: `*Name:*\n\`${asset.asset_name}\``,
+              text: `*Name:\n\`${asset.asset_name}\``,
             },
           ],
           accessory: {
@@ -126,7 +126,7 @@ export const getAssetView = (asset: Responses['asset'], jsonMode?: boolean): Say
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `*Mint Tx:*\n\`${asset.initial_mint_tx_hash}\``,
+            text: `*Mint Tx:\n\`${asset.initial_mint_tx_hash}\``,
           },
         },
         {
@@ -134,11 +134,11 @@ export const getAssetView = (asset: Responses['asset'], jsonMode?: boolean): Say
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Quantity:*\n${asset.quantity}`,
+              text: `*Quantity:\n${asset.quantity}`,
             },
             {
               type: 'mrkdwn',
-              text: `*Mint/Burn Count:*\n${asset.mint_or_burn_count}`,
+              text: `*Mint/Burn Count:\n${asset.mint_or_burn_count}`,
             },
           ],
         },
@@ -146,7 +146,7 @@ export const getAssetView = (asset: Responses['asset'], jsonMode?: boolean): Say
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `*On-chain Metadata:*\n\`${
+            text: `*On-chain Metadata:\n\`${
               asset.onchain_metadata ? `\`\`\`${onchainMetadataString}\`\`\`` : 'No'
             }\``,
           },
@@ -155,7 +155,7 @@ export const getAssetView = (asset: Responses['asset'], jsonMode?: boolean): Say
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `*Off-chain Metadata:*\n\`${
+            text: `*Off-chain Metadata:\n\`${
               asset.metadata ? `\`\`\`${offchainMetadataString}\`\`\`` : 'No'
             }\``,
           },

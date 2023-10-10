@@ -90,7 +90,7 @@ To work around these limitations we'll be forced to truncate long output (such a
 
 ### Output mode
 
-When possible command output will be enhanced with user-friendly UI components, leveraging the capabilities of the Slack Block Kit framework. For users who prefer raw data, the optional `--json` parameter allows for switching the output to JSON format.
+When possible command output will be enhanced with user-friendly UI elements, leveraging the capabilities of the Slack Block Kit framework. For users who prefer raw data, the optional `--json` parameter allows for switching the output to JSON format.
 
 ### Multi network support
 
@@ -98,7 +98,7 @@ The app will include built-in support for querying data across multiple Cardano 
 
 ### Onboarding
 
-Upon successful installation, the app will post welcome message with a button to the app's homepage. Here, user can find brief instructions on how to configure Blockfrost projects and webhooks to work with the app as well as instructions for querying blockchain data.
+Upon successful installation, the app will post welcome message wih a brief instructions on how to configure Blockfrost projects and webhooks to work with the app as well as instructions for querying blockchain data.
 
 ### Available commands
 
@@ -139,7 +139,16 @@ Button "Show in Explorer" will redirect the user to an external blockchain explo
 
 #### `/address <bech32 address> [--network (mainnet | preview | preprod)] [--json]`
 
-Retrieve information about the address.
+The output of the `/address <hash>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
+
+The output will include:
+
+- Address itself
+- Associated stake address
+- ADA balance
+- number of tokens held by the address
+- The five largest assets (ranked by the quantity held)
+- The last five transactions, with each transaction displaying the timestamp and transaction hash
 
 #### `/account <bech32 stake address> [--network (mainnet | preview | preprod)] [--json]`
 

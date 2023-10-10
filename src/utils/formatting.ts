@@ -2,18 +2,26 @@ import { Responses } from '@blockfrost/blockfrost-js';
 import { SayArguments } from '@slack/bolt';
 import { format } from 'date-fns';
 
-export const lovelaceToAda = (lovelace: number | string): number => {
-  if (typeof lovelace === 'string') {
-    lovelace = Number(lovelace);
+export const formatAssetDecimals = (quantity: number | string, decimals: number | null): number => {
+  if (typeof quantity === 'string') {
+    quantity = Number(quantity);
   }
 
-  if (typeof lovelace !== 'number' || isNaN(lovelace)) {
+  if (decimals === null) {
+    return quantity;
+  }
+
+  if (typeof quantity !== 'number' || isNaN(quantity)) {
     throw new Error(
-      'Invalid input: Lovelace should be a number or a string that can be converted to a number.',
+      'Invalid input: Quantity should be a number or a string that can be converted to a number.',
     );
   }
 
-  return lovelace / 1000000;
+  return (quantity / 10) ^ decimals;
+};
+
+export const lovelaceToAda = (lovelace: number | string) => {
+  return formatAssetDecimals(lovelace, 6);
 };
 
 export const formatInputs = (inputs: Responses['tx_content_utxo']['inputs']) => {
@@ -36,11 +44,11 @@ export const formatInputs = (inputs: Responses['tx_content_utxo']['inputs']) => 
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Tx Hash:*\n\`${input.tx_hash}\``,
+              text: `*Tx Hash:\n\`${input.tx_hash}\``,
             },
             {
               type: 'mrkdwn',
-              text: `*Index:*\n${input.output_index}`,
+              text: `*Index:\n${input.output_index}`,
             },
           ],
         },
@@ -48,7 +56,7 @@ export const formatInputs = (inputs: Responses['tx_content_utxo']['inputs']) => 
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `📘 *Address:*\n\`${input.address}\``,
+            text: `📘 *Address:\n\`${input.address}\``,
           },
         },
         {
@@ -56,11 +64,11 @@ export const formatInputs = (inputs: Responses['tx_content_utxo']['inputs']) => 
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Amount:*\n${amount} ADA`,
+              text: `*Amount:\n${amount} ADA`,
             },
             {
               type: 'mrkdwn',
-              text: `*Collateral:*\n${input.collateral ? 'Yes' : 'No'}`,
+              text: `*Collateral:\n${input.collateral ? 'Yes' : 'No'}`,
             },
           ],
         },
@@ -72,7 +80,7 @@ export const formatInputs = (inputs: Responses['tx_content_utxo']['inputs']) => 
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `*Assets:*\`\`\`${JSON.stringify(tokens, undefined, 2)}\`\`\``,
+            text: `*Assets:\`\`\`${JSON.stringify(tokens, undefined, 2)}\`\`\``,
           },
         });
       }
@@ -104,7 +112,7 @@ export const formatOutputs = (outputs: Responses['tx_content_utxo']['outputs']) 
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `📘 *Address:*\n\`${output.address}\``,
+            text: `📘 *Address:\n\`${output.address}\``,
           },
         },
         {
@@ -112,11 +120,11 @@ export const formatOutputs = (outputs: Responses['tx_content_utxo']['outputs']) 
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Amount:*\n${amount} ADA`,
+              text: `*Amount:\n${amount} ADA`,
             },
             {
               type: 'mrkdwn',
-              text: `*Collateral:*\n${output.collateral ? 'Yes' : 'No'}`,
+              text: `*Collateral:\n${output.collateral ? 'Yes' : 'No'}`,
             },
           ],
         },
@@ -128,7 +136,7 @@ export const formatOutputs = (outputs: Responses['tx_content_utxo']['outputs']) 
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `*Assets:*\`\`\`${JSON.stringify(tokens, undefined, 2)}\`\`\``,
+            text: `*Assets:\`\`\`${JSON.stringify(tokens, undefined, 2)}\`\`\``,
           },
         });
       }
@@ -156,7 +164,7 @@ export const truncateLongStrings = (obj: any): any => {
   }
 
   // Handle objects
-  let newObj: { [key: string]: any } = {};
+  const newObj: { [key: string]: any } = {};
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       const value = obj[key];

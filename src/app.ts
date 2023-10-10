@@ -11,6 +11,9 @@ import express from 'express';
 import { WebClient } from '@slack/web-api';
 import { logger } from './utils/logger';
 import { registerBlockCommand } from './commands/block/block';
+import { registerAddressCommand } from './commands/address/address';
+import { StringIndexed } from '@slack/bolt/dist/types/helpers';
+import { getInstallationId } from './utils/slack';
 
 if (!process.env.SLACK_SIGNING_SECRET) {
   throw Error('Set env variable SLACK_SIGNING_SECRET');
@@ -31,15 +34,15 @@ const expressReceiver = new ExpressReceiver({
     'commands',
     // View messages and other content in public channels that Blockfrost for Slack has been added to
     'channels:history',
+    // Welcome message after adding user to a public channel
+    'channels:read',
+    // Welcome message after adding user to a private channel
+    // 'groups:read',
   ],
   installationStore: new BlockfrostInstallationStore(),
 });
 
 const app = new App({
-  // signingSecret: process.env.SLACK_SIGNING_SECRET,
-  // clientId: process.env.SLACK_CLIENT_ID,
-  // clientSecret: process.env.SLACK_CLIENT_SECRET,
-  // stateSecret: process.env.SLACK_STATE_SECRET,
   receiver: expressReceiver,
   logLevel: LogLevel.DEBUG,
 });
@@ -47,6 +50,58 @@ const app = new App({
 app.use(async ({ next }) => {
   await next();
 });
+
+export const registerWelcomeMessage = (app: App<StringIndexed>) => {
+  app.event('member_joined_channel', async ({ event, client, body }) => {
+    const installationId = getInstallationId(body);
+    if (!installationId) {
+      return;
+    }
+
+    const installation = await dbStore.fetchInstallation(installationId);
+
+    // Check if the bot user is the one who joined the channel
+    if (event.user === installation?.bot?.userId) {
+      try {
+        // Send a welcome message to the channel
+        await client.chat.postMessage({
+          channel: event.channel,
+          text: `## :wave: Welcome to Blockfrost for Slack!
+
+This Slack app aims to provide you with seamless interactions and real-time updates from Blockfrost's blockchain services right here in Slack.
+
+### Here's a quick rundown of what you can expect:
+
+- **:mag: Query Blockchain Data**: Quickly fetch details of blocks, transactions, and assets without leaving Slack.
+- **:bell: Real-time Alerts**: Set up webhooks to get real-time notifications for blockchain events.
+- **:gear: Easy Configuration**: Link your Blockfrost projects and webhooks in just a few clicks.
+
+### :bulb: Getting Started
+
+1. Link your Blockfrost project with \`/link project\`.
+2. Link your Blockfrost webhook for real-time updates \`/link webhook\`.
+3. Type \`/blockfrost help\` to view available commands.
+
+### :wrench: Examples
+
+- To fetch a block: \`/block <block-hash>\`
+- To fetch a transaction: \`/tx <transaction-hash>\`
+  
+  #### Additional Parameters:
+  - Use \`--json\` to get the output in JSON format.
+  - Use \`--network\` to specify the blockchain network. For example, \`/block <block-hash> --network testnet\`.
+
+
+If you have any questions or run into any issues, feel free to reach out here or email us at [support@blockfrost.io](mailto:support@blockfrost.io).
+
+### :rocket: Let's get started!`,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  });
+};
 
 // Expose webhook endpoint
 expressReceiver.router.post('/webhook-slack/:installation', express.json(), async (req, res) => {
@@ -99,6 +154,9 @@ registerLinkCommand(app);
 registerTxCommand(app);
 registerAssetCommand(app);
 registerBlockCommand(app);
+registerAddressCommand(app);
+
+registerWelcomeMessage(app);
 
 (async () => {
   // Start your app
