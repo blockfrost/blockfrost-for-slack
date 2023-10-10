@@ -229,15 +229,15 @@ The output will include:
 
 The output of the `/tx <hash>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried transaction.
 
-1. Transaction hash - This section shows the hash of the transaction enclosed in code formatting.
-2. Timestamp and Block - The time at which the transaction was included in the blockchain and the block height in which it was included are displayed here.
-3. Slot and Fees - This section displays the slot in which the transaction was added and the transaction fees in ADA.
-4. Total Output and Size - Shows the total amount of ADA sent in the transaction and the size of the transaction in bytes.
-5. Certificates and Mints/Burns - Shows the number of different types of certificates involved in the transaction (stake, delegation, pool updates, and pool retirements), as well as any asset minting or burning activities.
-6. Actions - This last section provides users with a set of interactive buttons to delve further into various aspects of the transaction
-   - "Show Metadata" - Shows transaction metadata
-   - "Show UTXOs" - Shows inputs and outputs associated with this transaction.
-   - "Open in Explorer" - Redirects the user to an external blockchain explorer web page that shows comprehensive details about the transaction
+- Transaction hash - This section shows the hash of the transaction enclosed in code formatting.
+- Timestamp and Block - The time at which the transaction was included in the blockchain and the block height in which it was included are displayed here.
+- Slot and Fees - This section displays the slot in which the transaction was added and the transaction fees in ADA.
+- Total Output and Size - Shows the total amount of ADA sent in the transaction and the size of the transaction in bytes.
+- Certificates and Mints/Burns - Shows the number of different types of certificates involved in the transaction (stake, delegation, pool updates, and pool retirements), as well as any asset minting or burning activities.
+- Actions - This last section provides users with a set of interactive buttons to delve further into various aspects of the transaction
+  - "Show Metadata" - Shows transaction metadata
+  - "Show UTXOs" - Shows inputs and outputs associated with this transaction.
+  - "Open in Explorer" - Redirects the user to an external blockchain explorer web page that shows comprehensive details about the transaction
 
 #### Real-time notifications
 
