@@ -2,91 +2,18 @@
 
 Blockfrost for Slack is a toolkit for interacting with blockchain data, perfect for Cardano developers, crypto enthusiasts, and corporate teams who spent their day on Slack. The integration offers a set of slash commands that turn your Slack workspace into a versatile Cardano query terminal. Instantly query blockchain data such as assets, addresses, stake accounts, blocks, and transactions or utilize webhooks to receive real-time notifications.
 
-## Event Subscription and Connection Modes
+## Available commands
 
-To listen for events happening in a Slack workspace (like when a message is posted) we'll use the Events API.
+Here's quick overview of available commands:
 
-We need to subscribe to following events types
-
-- `message.channels` - listens for messages in public channels that the app is added to
-- `message.groups` - listens for messages in private channels that the app is added to
-
-There are 2 ways that the app can communicate with the Slack API - Socket mode and HTTP mode[^connection-modes].
-
-[^connection-modes]: https://api.slack.com/apis/connections
-
-### Socket mode
-
-Socket Mode allows to receive events through a private WebSocket, instead of a direct HTTP subscription to events. WebSockets use a bidirectional stateful protocol with low latency to communicate between two parties.
-
-Socket mode is a quick and easy way to get up and running, especially for local development or in an environment where it's hard to expose a public HTTP endpoint.
-
-Apps using Socket Mode are not currently allowed in the public Slack App Directory.[^socket-mode]
-
-[^socket-mode]: https://api.slack.com/apis/connections/socket
-
-### HTTP mode
-
-We'll create a public HTTP endpoint that our app listens on, choose what events to subscribe to and Slack will send HTTP POST requests with relevant events to the endpoint.
-
-HTTP mode is ideal for building a large-scale application that are meant to be distributed across multiple instances or regions, and require more control over the handling of incoming requests.
-
-This method of communication is mandatory for publishing and distributing an app via the Slack App Directory.[^http-mode]
-
-For our app, HTTP mode appears to be the more suitable choice.
-
-[^http-mode]: https://api.slack.com/apis/connections#events
-
-## Sending and responding to actions
-
-### Slash commands
-
-Slash commands enable users to interact with an app from within Slack.
-Each command needs to be enabled and configured in the app configuration.[^command]
-This will be the primary way to interact with the app.
-
-[^command]: https://api.slack.com/interactivity/slash-commands
-
-### UI elements
-
-To use features like buttons, select menus, datepickers, modals, and shortcuts, we'll need to enable interactivity in the Slack app configuration.
-Similar to events, we need to specify a Request URL for Slack to send the action (such as user clicked a button).[^ui-elements]
-
-[^ui-elements]: https://slack.dev/bolt-js/tutorial/getting-started-http#sending-and-responding-to-actions
-
-## Tokens and installing apps
-
-By default, newly built Slack apps can only be installed in their associated workspace.
-
-For distributing the app publicly the app needs to implement OAuth 2.0 flow. With OAuth, the app will be able to generate access tokens for each workspace and user on the fly and allows for simple one-click installation.[^distributing]
-
-### OAuth 2.0
-
-OAuth 2.0 is a protocol that lets the app request authorization to private details in a user's Slack account without getting their password. It's also the vehicle by which Slack apps are installed on a team. The app asks for specific permission scopes and is rewarded with access tokens upon a user's approval.[^oauth]
-
-[^distributing]: https://api.slack.com/start/distributing
-[^oauth]: https://api.slack.com/authentication/oauth-v2
-
-### Slack Bot Token
-
-During OAuth flow, the Slack API issues a Bot User Token upon successful authorization of the app. This token acts as the "passport" for the bot to interact with the Slack API, effectively granting it permissions to perform various actions within a workspace, such as posting messages or listening to events. Each installation of the app across different Slack workspaces will generate a unique Bot User Token, which is dynamically created and should be securely stored for subsequent API interactions.[^oauth]
-
-## UI/UX
-
-The range of UI/UX possibilities is somewhat constrained by the limitations of Slack's Block Kit framework. Block Kit does provide a set of basic interactive components like buttons, dropdowns, and modals, but it lacks the flexibility for creating rich, custom layouts compared to a full-featured web app. The UI elements are largely predefined, and customization options are limited. This means that while we can create functional and straightforward interfaces, our ability to deliver a highly customized user experience is restricted. Overall, our focus remains on simple, text-based interactions within the conversational context of Slack.
-
-### Limitations
-
-Here is a brief list of limitations that restricts our ability to create a rich user interfaces
-
-- Lack of table layout
-- Message layout is limited to the maximum of 2 columns
-- Message with interactive components has fixed width
-- Inability to control text-wrapping
-- Limit of 50 UI blocks per message
-- Limit of 3000 characters in a block
-
-To work around these limitations we'll be forced to truncate long output (such as list of assets held by an address/account).
+- `/link project`
+- `/link webhook`
+- `/account`
+- `/address`
+- `/asset`
+- `/block`
+- `/pool`
+- `/tx`
 
 ### Output mode
 
@@ -100,20 +27,7 @@ The app will include built-in support for querying data across multiple Cardano 
 
 Upon successful installation, the app will post welcome message wih a brief instructions on how to configure Blockfrost projects and webhooks to work with the app as well as instructions for querying blockchain data.
 
-### Available commands
-
-Here's quick overview of available commands:
-
-- `/link project`
-- `/link webhook`
-- `/account`
-- `/address`
-- `/asset`
-- `/block`
-- `/pool`
-- `/tx`
-
-#### `/link project [<PROJECT_ID>]`
+### `/link project [<PROJECT_ID>]`
 
 Register Blockfrost project to enable querying data directly within the Slack App. User can register one project for each network (mainnet, preview, preprod).
 
@@ -125,7 +39,7 @@ After user enters the command without providing `PROJECT_ID` a modal will show u
 Upon successful linking, a message appears saying, "Webhook successfully linked!"
 If the linking fails, an error message appears saying, "Failed to link the webhook. Please try again."
 
-#### `/link webhook`
+### `/link webhook`
 
 Register Blockfrost webhook to receive real-time events directly to a Slack channel.
 
@@ -140,7 +54,7 @@ After user enters the command a modal will show up with following elements:
 Upon successful linking, a message appears saying, "Webhook successfully linked!"
 If the linking fails, an error message appears saying, "Failed to link the webhook. Please try again."
 
-#### `/account <bech32 stake address> [--network (mainnet | preview | preprod)] [--json]`
+### `/account <bech32 stake address> [--network (mainnet | preview | preprod)] [--json]`
 
 The output of the `/account <bech32 stake address>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
 
@@ -156,7 +70,7 @@ The output will include:
   - "Open in Explorer" - Redirects the user to an external blockchain explorer web page to provide more details about the stake Account.
   - "Show Stake Pool" - Displays more information about the stake pool
 
-#### `/address <bech32 address> [--network (mainnet | preview | preprod)] [--json]`
+### `/address <bech32 address> [--network (mainnet | preview | preprod)] [--json]`
 
 The output of the `/address <bech32 address>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
 
@@ -169,7 +83,7 @@ The output will include:
 - The five largest assets (ranked by the quantity held)
 - The last five transactions, with each transaction displaying the timestamp and transaction hash
 
-#### `/asset <hex-or-bech32> [--network (mainnet | preview | preprod)] [--json]`
+### `/asset <hex-or-bech32> [--network (mainnet | preview | preprod)] [--json]`
 
 The output of the `/asset <hash>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
 
@@ -186,7 +100,7 @@ The output will include:
 
 Button "Open in Explorer" will redirect the user to an external blockchain explorer web page to provide more details about the asset.
 
-#### `/block [<hash-or-number>] [--network (mainnet | preview | preprod)] [--json]`
+### `/block [<hash-or-number>] [--network (mainnet | preview | preprod)] [--json]`
 
 The output of the `/block [<hash-or-number>]` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
 
@@ -206,7 +120,7 @@ The output will include:
 
 Button "Open in Explorer" will redirect the user to an external blockchain explorer web page to provide more details about the block.
 
-#### `/pool <pool_id> [--network (mainnet | preview | preprod)] [--json]`
+### `/pool <pool_id> [--network (mainnet | preview | preprod)] [--json]`
 
 The output of the `/pool <pool_id>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried asset.
 
@@ -225,7 +139,7 @@ The output will include:
 - Buttons
   - "Open in Explorer" - Redirects the user to an external blockchain explorer web page to provide more details about the stake pool.
 
-#### `/tx <hash> [--network (mainnet | preview | preprod)] [--json]`
+### `/tx <hash> [--network (mainnet | preview | preprod)] [--json]`
 
 The output of the `/tx <hash>` command, when invoked without the `--json` parameter, will display a visually formatted Slack message containing various details about the queried transaction.
 
@@ -239,7 +153,7 @@ The output of the `/tx <hash>` command, when invoked without the `--json` parame
   - "Show UTXOs" - Shows inputs and outputs associated with this transaction.
   - "Open in Explorer" - Redirects the user to an external blockchain explorer web page that shows comprehensive details about the transaction
 
-#### Real-time notifications
+### Real-time notifications
 
 Users can configure real-time notifications through Blockfrost webhooks to stay updated on blockchain events. Here's how to set it up:
 
@@ -252,20 +166,6 @@ Users can configure real-time notifications through Blockfrost webhooks to stay 
 4. Enter Credentials: Fill in the webhook identifier and authentication token into the modal's input fields and save the configuration.
 
 Once configured, any event meeting the criteria will automatically post notifications to the Slack channel where the webhook is linked.
-
-## API Endpoints
-
-This app is using Slack's Bolt framework which automatically expose several crucial endpoints:
-
-- `/slack/install` - Initiates the OAuth installation process for your Slack app.
-- `/slack/oauth_redirect` - The redirect URL where Slack will send the user after they approve your app's requested permissions. This is where the actual OAuth token exchange happens.
-- `/slack/events` - This endpoint receives all subscribed events, executed slash commands and any interactions with shortcuts, modals, or interactive components (such as buttons, select menus, and datepickers)
-
-### Webhook endpoint
-
-The app exposes `/installations/:installationId` endpoint, which serves as the endpoint URL for incoming webhooks that users can configure via the Blockfrost Dashboard. The origin of each incoming request is verified to prevent unauthorized access or tampering.
-
-Payload of the webhook is send as a message to a Slack channel where the webhook was linked using `/link webhook` command.
 
 ## Installation
 
@@ -288,6 +188,15 @@ To achieve this, there are two key steps you'll need to complete:
 #### Initialize Your Slack App
 
 Head over to [https://api.slack.com/apps] to create a new Slack app. During this process, you'll need to configure the app settings as required by Blockfrost for Slack.
+
+TODO
+
+To listen for events happening in a Slack workspace (like when a message is posted) we'll use the Events API.
+
+We need to subscribe to following events types
+
+- `message.channels` - listens for messages in public channels that the app is added to
+- `message.groups` - listens for messages in private channels that the app is added to
 
 #### App Deployment
 
@@ -312,6 +221,20 @@ Head over to [https://api.slack.com/apps] to create a new Slack app. During this
 yarn
 yarn start
 ```
+
+### API Endpoints
+
+This app is using Slack's Bolt framework which automatically expose several crucial endpoints:
+
+- `/slack/install` - Initiates the OAuth installation process for your Slack app.
+- `/slack/oauth_redirect` - The redirect URL where Slack will send the user after they approve your app's requested permissions. This is where the actual OAuth token exchange happens.
+- `/slack/events` - This endpoint receives all subscribed events, executed slash commands and any interactions with shortcuts, modals, or interactive components (such as buttons, select menus, and datepickers)
+
+### Webhook endpoint
+
+The app exposes `/installations/:installationId` endpoint, which serves as the endpoint URL for incoming webhooks that users can configure via the Blockfrost Dashboard. The origin of each incoming request is verified to prevent unauthorized access or tampering.
+
+Payload of the webhook is send as a message to a Slack channel where the webhook was linked using `/link webhook` command.
 
 ### DB Schema
 
