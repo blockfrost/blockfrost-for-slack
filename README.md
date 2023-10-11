@@ -253,11 +253,69 @@ Users can configure real-time notifications through Blockfrost webhooks to stay 
 
 Once configured, any event meeting the criteria will automatically post notifications to the Slack channel where the webhook is linked.
 
-## Backend
+## API Endpoints
+
+This app is using Slack's Bolt framework which automatically expose several crucial endpoints:
+
+- `/slack/install` - Initiates the OAuth installation process for your Slack app.
+- `/slack/oauth_redirect` - The redirect URL where Slack will send the user after they approve your app's requested permissions. This is where the actual OAuth token exchange happens.
+- `/slack/events` - This endpoint receives all subscribed events, executed slash commands and any interactions with shortcuts, modals, or interactive components (such as buttons, select menus, and datepickers)
 
 ### Webhook endpoint
 
+The app exposes `/installations/:installationId` endpoint, which serves as the endpoint URL for incoming webhooks that users can configure via the Blockfrost Dashboard. The origin of each incoming request is verified to prevent unauthorized access or tampering.
+
+Payload of the webhook is send as a message to a Slack channel where the webhook was linked using `/link webhook` command.
+
+## Installation
+
+### Blockfrost for Slack from Slack app directory
+
+This let's you install the app running on our servers. It's the quickest way to start!
+
+> **Note:** Blockfrost for Slack is not yet published in the Slack App Directory. If you want to try it out, please follow the steps in [Run Your Own Slack App](#run-your-own-slack-app).
+
+1. Go to the Slack App Directory: Open Slack and click on "Apps" in the sidebar or go directly to the Slack App Directory by navigating to [https://slack.com/apps].
+2. Search for the App: Use the search bar at the top of the page to search for "Blockfrost for Slack".
+3. Install the app: Click the "Install" or "Add to Slack" button.
+
+### Run your own Slack app
+
+This method is designed for advanced users, enabling you to deploy and manage a fully customized version of Blockfrost for Slack on your own server infrastructure. This approach offers you greater control and customization options.
+
+To achieve this, there are two key steps you'll need to complete:
+
+#### Initialize Your Slack App
+
+Head over to [https://api.slack.com/apps] to create a new Slack app. During this process, you'll need to configure the app settings as required by Blockfrost for Slack.
+
+#### App Deployment
+
+1. Clone this repository and deploy the code to your own server and domain.
+2. Set environment variables (See .env.sample file)
+3. Initialize postgres Database with [DB Schema](#db-schema).
+4. Create config file named `production.json` or `development.json` with
+
+```json
+{
+  "db": {
+    "connectionString": "postgres://<USER>:@<HOSTNAME>:<PORT>/<DB>"
+  }
+}
+```
+
+> Note: In development environment you may choose to disable SSL by adding `ssl: false` to DB configuration. However, it's important to remember that disabling SSL will result in unencrypted data transmission, which is not recommended for production use.
+
+5. Install dependencies and start the app
+
+```
+yarn
+yarn start
+```
+
 ### DB Schema
+
+Initialize postgres database with following schema:
 
 ```sql
 CREATE TABLE slack_installations (
