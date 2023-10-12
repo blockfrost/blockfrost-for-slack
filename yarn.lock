@@ -14,10 +14,10 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@blockfrost/blockfrost-js@^5.4.0":
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/@blockfrost/blockfrost-js/-/blockfrost-js-5.4.0.tgz#93051877116cde276dbff85a713818e1e790a36f"
-  integrity sha512-al9rAlwXFsuLOCoY1yG5ib73BqCzY8hP/oVAIbmLlkRwUut+wDOxv8SDkr4jrW80vW7Grom1TbpNEPSWRqgsUg==
+"@blockfrost/blockfrost-js@^6.0.0-beta.0":
+  version "6.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@blockfrost/blockfrost-js/-/blockfrost-js-6.0.0-beta.0.tgz#441a1cb8d8c9877085ae46cf81a84dd5063d73f2"
+  integrity sha512-3A+L10Jjo7GttsjpchlPWP6nITaYjEFqecS7RVXObUE1XZbEAdxR0IG7z9fIENFXdYJ6frJmq8pojGhu2C4YpQ==
   dependencies:
     "@blockfrost/openapi" "0.1.59"
     "@emurgo/cardano-serialization-lib-nodejs" "^11.4.0"

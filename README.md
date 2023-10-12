@@ -36,8 +36,8 @@ After user enters the command without providing `PROJECT_ID` a modal will show u
 - Text Field with a label saying "Enter the project ID"
 - Buttons: "Cancel" and "Submit"
 
-Upon successful linking, a message appears saying, "Webhook successfully linked!"
-If the linking fails, an error message appears saying, "Failed to link the webhook. Please try again."
+Upon successful linking, a message appears saying, "Project successfully linked!"
+If the linking fails, an error message appears saying, "Failed to link the project. Please try again."
 
 ### `/link webhook`
 
@@ -197,6 +197,7 @@ We need to subscribe to following events types
 
 - `message.channels` - listens for messages in public channels that the app is added to
 - `message.groups` - listens for messages in private channels that the app is added to
+- `member_joined_channel` - sent when an user joins a channel, used for sending welcome message after adding the app to a channel
 
 #### App Deployment
 

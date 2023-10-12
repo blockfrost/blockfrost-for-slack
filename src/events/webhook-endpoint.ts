@@ -32,8 +32,9 @@ export const registerWebhookEndpoint = (expressReceiver: ExpressReceiver) => {
       return res.status(400).send('Missing signature header.');
     }
 
+    let webhookEvent;
     try {
-      verifyWebhookSignature(
+      webhookEvent = verifyWebhookSignature(
         JSON.stringify(req.body), // Stringified request.body (Note: In AWS Lambda you don't need to call JSON.stringify as event.body is already stringified)
         signatureHeader,
         webhook.webhook_auth_token,
@@ -65,20 +66,20 @@ export const registerWebhookEndpoint = (expressReceiver: ExpressReceiver) => {
 
       await web.chat.postMessage({
         channel: webhook.slack_channel,
-        text: `*Received event \`${req.body.type}\` from webhook \`${req.body.webhook_id}\`*`,
+        text: `*Received event \`${webhookEvent.type}\` from webhook \`${webhookEvent.webhook_id}\`*`,
         blocks: [
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `*Received event ${req.body.type} from webhook \`${req.body.webhook_id}\`*`,
+              text: `*Received event ${webhookEvent.type} from webhook \`${webhookEvent.webhook_id}\`*`,
             },
           },
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `\`\`\`${JSON.stringify(req.body.payload, undefined, 2)}\`\`\``,
+              text: `\`\`\`${JSON.stringify(webhookEvent.payload, undefined, 2)}\`\`\``,
             },
           },
         ],
