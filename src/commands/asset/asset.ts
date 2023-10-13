@@ -1,10 +1,10 @@
 import { App } from '@slack/bolt';
-import { StringIndexed } from '@slack/bolt/dist/types/helpers';
-import messages from '../../messages';
-import { BlockfrostClient } from '../../services/blockfrost';
-import { initializeBlockfrostClient } from '../../utils/blockfrost';
-import { getAssetView } from './views/asset';
-import { parseCommand } from '../../utils/command';
+import { StringIndexed } from '@slack/bolt/dist/types/helpers.js';
+import messages from '../../messages.js';
+import { BlockfrostClient } from '../../services/blockfrost/index.js';
+import { initializeBlockfrostClient } from '../../utils/blockfrost.js';
+import { getAssetView } from './views/asset.js';
+import { parseCommand } from '../../utils/command.js';
 
 export const registerAssetCommand = (app: App<StringIndexed>) => {
   app.command('/asset', async ({ command, ack, say }) => {
@@ -19,6 +19,7 @@ export const registerAssetCommand = (app: App<StringIndexed>) => {
     }
 
     const bClient = await initializeBlockfrostClient(command, { network: options.network });
+
     if (!bClient) {
       await say(messages.CMD_LINK_PROJECT);
       return;
@@ -31,9 +32,11 @@ export const registerAssetCommand = (app: App<StringIndexed>) => {
 
     try {
       const asset = await bClient.getAsset(assetHex);
+
       await say(getAssetView(asset, options.json));
     } catch (error) {
       const response = BlockfrostClient.handleError(error, command.text);
+
       await say(response);
     }
   });

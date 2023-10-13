@@ -1,14 +1,15 @@
 import { Responses } from '@blockfrost/blockfrost-js';
 import { SayArguments } from '@slack/bolt';
-import { lovelaceToAda } from '../../../utils/formatting';
-import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
+import { lovelaceToAda } from '../../../utils/formatting.js';
+import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types/index.js';
 
 export const getPoolView = (
   poolData: { pool: Responses['pool']; metadata: Responses['pool_metadata'] },
-  network: CardanoNetwork,
+  _network: CardanoNetwork,
   jsonMode?: boolean,
 ): SayArguments => {
   const { pool, metadata } = poolData;
+
   if (!jsonMode) {
     return {
       blocks: [

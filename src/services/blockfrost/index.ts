@@ -27,6 +27,7 @@ export class BlockfrostClient {
     }));
 
     const pool = account.pool_id ? await this.client.poolMetadata(account.pool_id) : null;
+
     return { account, withdrawals: withdrawalsWithTimestamp, pool };
   };
 
@@ -36,11 +37,13 @@ export class BlockfrostClient {
       order: 'desc',
       count: 5,
     });
+
     return { address: addressData, transactions };
   };
 
   getAsset = async (asset: string) => {
     const res = await this.client.assetsById(asset);
+
     return res;
   };
 
@@ -66,16 +69,19 @@ export class BlockfrostClient {
 
   getTx = async (txHash: string) => {
     const res = await this.client.txs(txHash);
+
     return res;
   };
 
   getTxUtxo = async (txHash: string) => {
     const res = await this.client.txsUtxos(txHash);
+
     return res;
   };
 
   getTxMetadata = async (txHash: string) => {
     const res = await this.client.txsMetadata(txHash);
+
     return res;
   };
 

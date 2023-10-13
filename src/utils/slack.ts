@@ -1,5 +1,5 @@
 import { EnvelopedEvent, SlackAction, SlackViewAction, SlashCommand } from '@slack/bolt';
-import { logger as defaultLogger } from './logger';
+import { logger as defaultLogger } from './logger.js';
 
 export const getInstallationId = (
   commandOrAction: SlashCommand | SlackAction | SlackViewAction | EnvelopedEvent,
@@ -9,6 +9,7 @@ export const getInstallationId = (
     const enterpriseId = commandOrAction.enterprise_id;
     const teamId = commandOrAction.team_id;
     const installationId = enterpriseId ?? teamId;
+
     return installationId;
   } else {
     const enterpriseId = commandOrAction.enterprise?.id;

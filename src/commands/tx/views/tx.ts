@@ -1,7 +1,11 @@
 import { Responses } from '@blockfrost/blockfrost-js';
 import { SayArguments } from '@slack/bolt';
-import { formatUnixTimestamp, truncateLongStrings, lovelaceToAda } from '../../../utils/formatting';
-import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
+import {
+  formatUnixTimestamp,
+  truncateLongStrings,
+  lovelaceToAda,
+} from '../../../utils/formatting.js';
+import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types/index.js';
 
 export const getTxView = (
   tx: Responses['tx_content'],
@@ -9,6 +13,7 @@ export const getTxView = (
   jsonMode?: boolean,
 ): SayArguments => {
   let stringifiedTx = JSON.stringify(truncateLongStrings(tx), undefined, 2);
+
   if (stringifiedTx.length > 3000) {
     stringifiedTx = JSON.stringify({ ...tx, output_amount: '<TRUNCATED>' }, undefined, 2);
   }

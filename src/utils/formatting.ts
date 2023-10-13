@@ -153,21 +153,23 @@ export const formatUnixTimestamp = (ts: number) => {
   return format(new Date(ts * 1000), 'yyyy-MM-dd HH:mm:ss');
 };
 
-export const truncateLongStrings = (obj: any): any => {
+export const truncateLongStrings = <T>(obj: T): T => {
   if (typeof obj !== 'object' || obj === null) {
     return obj;
   }
 
   // Handle arrays
   if (Array.isArray(obj)) {
-    return obj.map(element => truncateLongStrings(element));
+    return obj.map(element => truncateLongStrings(element)) as T;
   }
 
   // Handle objects
-  const newObj: { [key: string]: any } = {};
+  const newObj: { [key: string]: unknown } = {};
+
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.hasOwn(obj, key)) {
       const value = obj[key];
+
       if (typeof value === 'string' && value.length > 500) {
         newObj[key] = `${value.substring(0, 500)}...<TRUNCATED>`;
       } else if (typeof value === 'object') {
@@ -178,5 +180,5 @@ export const truncateLongStrings = (obj: any): any => {
     }
   }
 
-  return newObj;
+  return newObj as T;
 };

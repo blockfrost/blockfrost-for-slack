@@ -1,7 +1,7 @@
-import { Responses } from '@blockfrost/blockfrost-js';
 import { SayArguments } from '@slack/bolt';
-import { truncateLongStrings } from '../../../utils/formatting';
-import { logger } from '../../../utils/logger';
+import { Responses } from '@blockfrost/blockfrost-js';
+import { truncateLongStrings } from '../../../utils/formatting.js';
+import { logger } from '../../../utils/logger.js';
 
 export const isResourceUriSupported = (uri: string) => {
   const SUPPORTED_PROTOCOLS = ['ipfs', 'http', 'https'];
@@ -14,32 +14,35 @@ export const isResourceUriSupported = (uri: string) => {
   return false;
 };
 
-export const getImageFromMetadata = (metadata: any): string[] => {
-  if (!metadata) {
+export const getImageFromMetadata = (metadata: unknown): string[] => {
+  if (!metadata || typeof metadata !== 'object' || metadata === null) {
     return [];
   }
 
   const images: string[] = [];
 
-  if (Array.isArray(metadata.image)) {
+  if ('image' in metadata && Array.isArray(metadata.image)) {
     const joinedSrc = metadata.image.join('');
+
     images.push(joinedSrc);
-  } else if (typeof metadata.image === 'string') {
+  } else if ('image' in metadata && typeof metadata.image === 'string') {
     images.push(metadata.image);
   }
 
-  if (Array.isArray(metadata.files)) {
+  if ('files' in metadata && Array.isArray(metadata.files)) {
     for (const file of metadata.files) {
       if (typeof file.src === 'string') {
         images.push(file.src);
       } else if (Array.isArray(file.src)) {
         const joinedSrc = file.src.join('') as string;
+
         images.push(joinedSrc);
       }
     }
   }
 
   const uniqueImages = new Set<string>();
+
   for (const image of images) {
     if (isResourceUriSupported(image)) {
       uniqueImages.add(image);

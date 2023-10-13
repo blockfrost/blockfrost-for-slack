@@ -1,17 +1,19 @@
 /* eslint-disable no-console */
 /* eslint-disable import/no-internal-modules */
-import './utils/env';
-import { App, ExpressReceiver, LogLevel } from '@slack/bolt';
-import BlockfrostInstallationStore from './installation-store';
-import { registerTxCommand } from './commands/tx/tx';
-import { registerAssetCommand } from './commands/asset/asset';
-import { registerLinkCommand } from './commands/link/link';
-import { registerBlockCommand } from './commands/block/block';
-import { registerAddressCommand } from './commands/address/address';
-import { registerWelcomeMessage } from './events/welcome-message';
-import { registerWebhookEndpoint } from './events/webhook-endpoint';
-import { registerAccountCommand } from './commands/account/account';
-import { registerPoolCommand } from './commands/pool/pool';
+// eslint-disable-next-line import/extensions
+import 'dotenv/config';
+import bolt from '@slack/bolt';
+import BlockfrostInstallationStore from './installation-store/index.js';
+import { registerTxCommand } from './commands/tx/tx.js';
+import { registerAssetCommand } from './commands/asset/asset.js';
+import { registerLinkCommand } from './commands/link/link.js';
+import { registerBlockCommand } from './commands/block/block.js';
+import { registerAddressCommand } from './commands/address/address.js';
+import { registerWelcomeMessage } from './events/welcome-message.js';
+import { registerWebhookEndpoint } from './events/webhook-endpoint.js';
+import { registerAccountCommand } from './commands/account/account.js';
+import { registerPoolCommand } from './commands/pool/pool.js';
+const { App, ExpressReceiver, LogLevel } = bolt;
 
 if (!process.env.SLACK_SIGNING_SECRET) {
   throw Error('Set env variable SLACK_SIGNING_SECRET');

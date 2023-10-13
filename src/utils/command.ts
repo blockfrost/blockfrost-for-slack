@@ -1,4 +1,4 @@
-import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
+import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types/index.js';
 import { SlashCommand } from '@slack/bolt';
 
 export const parseCommand = (command: SlashCommand) => {
@@ -15,8 +15,10 @@ export const parseCommand = (command: SlashCommand) => {
   const tokens = command.text.split(' ');
 
   let i = 0;
+
   while (i < tokens.length) {
     const token = tokens[i];
+
     if (token.startsWith('--')) {
       // store option as {key: value}, if value is not defined then fallback to true
       const paramKey = token.slice(2);

@@ -11,6 +11,7 @@ export const sortAssetsDesc = <T extends Responses['tx_content']['output_amount'
     .sort((a, b) => {
       const aBig = BigInt(a.quantity);
       const bBig = BigInt(b.quantity);
+
       if (aBig < bBig) return 1;
       if (aBig > bBig) return -1;
       return 0;

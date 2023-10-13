@@ -1,6 +1,6 @@
 import { Responses } from '@blockfrost/blockfrost-js';
 import { SayArguments } from '@slack/bolt';
-import { formatUnixTimestamp, lovelaceToAda } from '../../../utils/formatting';
+import { formatUnixTimestamp, lovelaceToAda } from '../../../utils/formatting.js';
 
 export const getBlockView = (
   block: Responses['block_content'],

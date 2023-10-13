@@ -65,6 +65,7 @@ export const getLinkWebhookView = async (
       ],
     },
   });
+
   return result;
 };
 
@@ -108,5 +109,6 @@ export const getLinkProjectView = async (
       ],
     },
   });
+
   return result;
 };

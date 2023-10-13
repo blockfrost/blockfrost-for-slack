@@ -15,13 +15,16 @@
     "@blockfrost/blockfrost-js": "^6.0.0-beta.0",
     "@slack/bolt": "^3.14.0",
     "@slack/logger": "^4.0.0",
+    "@slack/web-api": "^6.9.0",
     "config": "^3.3.9",
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "pg-promise": "^11.5.4"
   },
   "devDependencies": {
     "@types/config": "^3.3.1",
+    "@types/express": "^4.17.19",
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "6.7.4",
@@ -29,8 +32,15 @@
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-import": "2.28.1",
     "eslint-plugin-prettier": "5.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "express-serve-static-core": "^0.1.1",
     "prettier": "3.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
-  }
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "type": "module",
+  "packageManager": "yarn@3.6.4"
 }
