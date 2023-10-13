@@ -1,11 +1,12 @@
 import { App } from '@slack/bolt';
-import { StringIndexed } from '@slack/bolt/dist/types/helpers';
-import { dbStore } from '../services/db';
-import { getInstallationId } from '../utils/slack';
+import { StringIndexed } from '@slack/bolt/dist/types/helpers.js';
+import { dbStore } from '../services/db/index.js';
+import { getInstallationId } from '../utils/slack.js';
 
 export const registerWelcomeMessage = (app: App<StringIndexed>) => {
   app.event('member_joined_channel', async ({ event, client, body }) => {
     const installationId = getInstallationId(body);
+
     if (!installationId) {
       return;
     }

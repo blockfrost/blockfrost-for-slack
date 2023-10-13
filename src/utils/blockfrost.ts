@@ -1,8 +1,8 @@
 import { SlashCommand, SlackAction } from '@slack/bolt';
-import { dbStore } from '../services/db';
-import { getInstallationId } from './slack';
-import { BlockfrostClient } from '../services/blockfrost';
-import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
+import { dbStore } from '../services/db/index.js';
+import { getInstallationId } from './slack.js';
+import { BlockfrostClient } from '../services/blockfrost/index.js';
+import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types/index.js';
 
 export const getNetworkFromProjectId = (projectId: string) => {
   // Define network prefixes
@@ -25,10 +25,12 @@ export const initializeBlockfrostClient = async (
   const installationId = getInstallationId(commandOrAction);
 
   const projectId = await dbStore.getProjectId(installationId, options?.network);
+
   if (!projectId) {
     return null;
   }
 
   const bClient = new BlockfrostClient(projectId);
+
   return bClient;
 };

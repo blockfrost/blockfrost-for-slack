@@ -1,11 +1,11 @@
 import { App } from '@slack/bolt';
-import { StringIndexed } from '@slack/bolt/dist/types/helpers';
-import messages from '../../messages';
-import { BlockfrostClient } from '../../services/blockfrost';
-import { initializeBlockfrostClient } from '../../utils/blockfrost';
-import { parseCommand } from '../../utils/command';
-import { getAccountView } from './views/account';
-import { getPoolView } from '../pool/views/pool';
+import { StringIndexed } from '@slack/bolt/dist/types/helpers.js';
+import messages from '../../messages.js';
+import { BlockfrostClient } from '../../services/blockfrost/index.js';
+import { initializeBlockfrostClient } from '../../utils/blockfrost.js';
+import { parseCommand } from '../../utils/command.js';
+import { getAccountView } from './views/account.js';
+import { getPoolView } from '../pool/views/pool.js';
 
 export const registerAccountCommand = (app: App<StringIndexed>) => {
   app.command('/account', async ({ command, ack, say }) => {
@@ -15,6 +15,7 @@ export const registerAccountCommand = (app: App<StringIndexed>) => {
     const address = args[0]?.trim();
 
     const bClient = await initializeBlockfrostClient(command, { network: options.network });
+
     if (!bClient) {
       await say(messages.CMD_LINK_PROJECT);
       return;
@@ -22,9 +23,11 @@ export const registerAccountCommand = (app: App<StringIndexed>) => {
 
     try {
       const accountData = await bClient.getAccount(address);
+
       await say(getAccountView(accountData, options.network, options.json));
     } catch (error) {
       const response = BlockfrostClient.handleError(error, command.text);
+
       await say(response);
     }
   });
@@ -46,16 +49,18 @@ export const registerAccountCommand = (app: App<StringIndexed>) => {
     const { pool, network, jsonMode } = JSON.parse(action.value);
 
     const bClient = await initializeBlockfrostClient(body, { network });
+
     if (!bClient) {
       await say(messages.CMD_LINK_PROJECT);
       return;
     }
-    const poolData = await bClient.getPool(pool);
-
-    await say(getPoolView(poolData, network, jsonMode));
     try {
+      const poolData = await bClient.getPool(pool);
+
+      await say(getPoolView(poolData, network, jsonMode));
     } catch (error) {
-      const response = BlockfrostClient.handleError(error, 'a');
+      const response = BlockfrostClient.handleError(error, pool);
+
       await say(response);
     }
   });

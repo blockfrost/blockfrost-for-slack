@@ -3,10 +3,9 @@ import { SayArguments } from '@slack/bolt';
 import {
   formatUnixTimestamp,
   formatAssetDecimals,
-  truncateLongStrings,
   lovelaceToAda,
-} from '../../../utils/formatting';
-import { sortAssetsDesc } from '../../../utils/cardano';
+} from '../../../utils/formatting.js';
+import { sortAssetsDesc } from '../../../utils/cardano.js';
 
 export const getAddressView = (
   addressData: {

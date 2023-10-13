@@ -1,15 +1,17 @@
 import config from 'config';
 import { readFileSync } from 'fs';
-import { logger } from '../utils/logger';
+import { logger } from '../utils/logger.js';
 
 const loadConfig = () => {
   // connectionString is read from db.connectionString if it exists, otherwise load from file
   // defined in db.connectionStringFile
   let pgConnectionString = '';
+
   if (config.has('db.connectionString')) {
     pgConnectionString = config.get('db.connectionString');
   } else {
     const filename: string = config.get('db.connectionStringFile');
+
     logger.info(`Reading pgConnectionString from ${filename} `);
     pgConnectionString = readFileSync(filename, 'utf8');
   }

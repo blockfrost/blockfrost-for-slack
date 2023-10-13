@@ -1,11 +1,11 @@
 import { App } from '@slack/bolt';
-import { StringIndexed } from '@slack/bolt/dist/types/helpers';
-import messages from '../../messages';
-import { parseCommand } from '../../utils/command';
-import { getInstallationId } from '../../utils/slack';
-import { dbStore } from '../../services/db';
-import { logger } from '../../utils/logger';
-import { getLinkProjectView, getLinkWebhookView } from './views/link';
+import { StringIndexed } from '@slack/bolt/dist/types/helpers.js';
+import messages from '../../messages.js';
+import { parseCommand } from '../../utils/command.js';
+import { getInstallationId } from '../../utils/slack.js';
+import { dbStore } from '../../services/db/index.js';
+import { logger } from '../../utils/logger.js';
+import { getLinkProjectView, getLinkWebhookView } from './views/link.js';
 
 export const registerLinkCommand = (app: App<StringIndexed>) => {
   app.command('/link', async ({ command, ack, client, say, body }) => {
@@ -14,6 +14,7 @@ export const registerLinkCommand = (app: App<StringIndexed>) => {
 
     const [key, value] = args;
     const ALLOWED_KEYS = ['project', 'webhook'];
+
     if (!ALLOWED_KEYS.includes(key)) {
       await say(messages.CMD_LINK_HELP);
       return;
@@ -49,6 +50,7 @@ export const registerLinkCommand = (app: App<StringIndexed>) => {
 
     try {
       const installationId = getInstallationId(body, logger);
+
       await dbStore.registerProjectId(installationId, projectId);
 
       await client.chat.postMessage({
@@ -77,6 +79,7 @@ export const registerLinkCommand = (app: App<StringIndexed>) => {
 
     try {
       const installationId = getInstallationId(body, logger);
+
       await dbStore.linkWebhook(installationId, webhookIdentifier, webhookAuthToken, channelId);
 
       await client.chat.postMessage({

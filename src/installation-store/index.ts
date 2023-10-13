@@ -1,6 +1,6 @@
 import { Installation, InstallationQuery, InstallationStore } from '@slack/bolt';
-import { Logger } from '../utils/logger';
-import { dbStore } from '../services/db';
+import { Logger } from '../utils/logger.js';
+import { dbStore } from '../services/db/index.js';
 
 export default class BlockfrostInstallationStore implements InstallationStore {
   public async storeInstallation(installation: Installation, logger?: Logger): Promise<void> {
@@ -28,6 +28,7 @@ export default class BlockfrostInstallationStore implements InstallationStore {
     if (installQuery.isEnterpriseInstall && installQuery.enterpriseId !== undefined) {
       logger?.debug('fetching org installation');
       const installation = await dbStore.fetchInstallation(installQuery.enterpriseId);
+
       if (!installation) {
         throw new Error('Failed fetching installation');
       }
@@ -36,6 +37,7 @@ export default class BlockfrostInstallationStore implements InstallationStore {
     if (installQuery.teamId !== undefined) {
       logger?.debug('fetching single team installation');
       const installation = await dbStore.fetchInstallation(installQuery.teamId);
+
       if (!installation) {
         throw new Error('Failed fetching installation');
       }

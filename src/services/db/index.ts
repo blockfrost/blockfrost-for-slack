@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import pgLib from 'pg-promise';
-
-// eslint-disable-next-line import/extensions
-import pg from 'pg-promise/typescript/pg-subset';
-import { mainConfig } from '../../config/config';
 import { Installation } from '@slack/bolt';
-import { getNetworkFromProjectId } from '../../utils/blockfrost';
-import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
+import pgLib from 'pg-promise';
+// eslint-disable-next-line import/extensions
+import pg from 'pg-promise/typescript/pg-subset.js';
+import { mainConfig } from '../../config/config.js';
+import { getNetworkFromProjectId } from '../../utils/blockfrost.js';
+import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types/index.js';
 
 const pgp = pgLib({});
 
@@ -46,6 +45,7 @@ class DBStore {
     }>(`SELECT installation_data FROM slack_installations WHERE installation_id = $1`, [
       installationId,
     ]);
+
     return installation?.installation_data;
   };
 
@@ -77,6 +77,7 @@ class DBStore {
       `SELECT project_id FROM slack_linked_projects WHERE installation_id = $1 AND network = $2`,
       [installationId, network],
     );
+
     return res?.project_id;
   };
 
@@ -92,6 +93,7 @@ class DBStore {
       WHERE installation_id = $1 AND webhook_id = $2`,
       [installationId, webhookId],
     );
+
     return webhook;
   };
 

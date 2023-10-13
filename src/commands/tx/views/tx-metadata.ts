@@ -1,9 +1,14 @@
 import { Responses } from '@blockfrost/blockfrost-js';
+import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types/index.js';
 import { SayArguments } from '@slack/bolt';
 
 export const getTxMetadataView = (
-  txHash: string,
-  metadata: Responses['tx_content_metadata'],
+  tx: {
+    txHash: string;
+    metadata: Responses['tx_content_metadata'];
+  },
+  _network: CardanoNetwork,
+  _jsonMode?: boolean,
 ): SayArguments => {
   return {
     blocks: [
@@ -18,14 +23,14 @@ export const getTxMetadataView = (
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `\`${txHash}\``,
+          text: `\`${tx.txHash}\``,
         },
       },
       {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `\`\`\`${JSON.stringify(metadata, undefined, 2)}\`\`\``,
+          text: `\`\`\`${JSON.stringify(tx.metadata, undefined, 2)}\`\`\``,
         },
       },
     ],
