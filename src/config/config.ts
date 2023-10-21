@@ -6,9 +6,11 @@ const loadConfig = () => {
   return {
     db: {
       connectionString: process.env.DB_CONNECTION_STRING,
-      maxConnections: Number(process.env.DB_MAX_CONNECTIONS) ?? 2,
-      connectionTimeout: Number(process.env.DB_CONNECTION_TIMEOUT) ?? 5000,
-      idleTimeoutMs: Number(process.env.DB_IDLE_TIMEOUT) ?? 10000,
+      maxConnections: process.env.DB_MAX_CONNECTIONS ? Number(process.env.DB_MAX_CONNECTIONS) : 2,
+      connectionTimeout: process.env.DB_CONNECTION_TIMEOUT
+        ? Number(process.env.DB_CONNECTION_TIMEOUT)
+        : 5000,
+      idleTimeoutMs: process.env.DB_IDLE_TIMEOUT ? Number(process.env.DB_IDLE_TIMEOUT) : 10000,
       ssl:
         process.env.DB_SSL !== undefined
           ? JSON.parse(process.env.DB_SSL)
