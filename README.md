@@ -204,17 +204,8 @@ We need to subscribe to following events types
 1. Clone this repository and deploy the code to your own server and domain.
 2. Set environment variables (See .env.sample file)
 3. Initialize postgres Database with [DB Schema](#db-schema).
-4. Create config file named `production.json` or `development.json` with
 
-```json
-{
-  "db": {
-    "connectionString": "postgres://<USER>:@<HOSTNAME>:<PORT>/<DB>"
-  }
-}
-```
-
-> Note: In development environment you may choose to disable SSL by adding `ssl: false` to DB configuration. However, it's important to remember that disabling SSL will result in unencrypted data transmission, which is not recommended for production use.
+> Note: In development environment you may choose to disable SSL by setting env variable `DB_SSL=false`. However, it's important to remember that disabling SSL will result in unencrypted data transmission, which is not recommended for production use.
 
 5. Install dependencies and start the app
 
