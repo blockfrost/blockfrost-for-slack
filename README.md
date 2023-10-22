@@ -187,9 +187,7 @@ To achieve this, there are two key steps you'll need to complete:
 
 #### Initialize Your Slack App
 
-Head over to [https://api.slack.com/apps] to create a new Slack app. During this process, you'll need to configure the app settings as required by Blockfrost for Slack.
-
-TODO
+Head over to [https://api.slack.com/apps] to create a new Slack app. During this process, you'll need to configure the app settings.
 
 To listen for events happening in a Slack workspace (like when a message is posted) we'll use the Events API.
 
@@ -198,6 +196,108 @@ We need to subscribe to following events types
 - `message.channels` - listens for messages in public channels that the app is added to
 - `message.groups` - listens for messages in private channels that the app is added to
 - `member_joined_channel` - sent when an user joins a channel, used for sending welcome message after adding the app to a channel
+
+To speed up your setup process, simply copy and paste the following JSON into the App Manifest. This action will auto-configure OAuth, event subscriptions, and slash commands for you.
+
+> Note: You need to replace `<YOUR-DOMAIN>` with the domain where you deployed the app.
+
+```
+{
+    "display_information": {
+        "name": "Blockfrost for Slack"
+    },
+    "features": {
+        "bot_user": {
+            "display_name": "Blockfrost for Slack",
+            "always_online": false
+        },
+        "slash_commands": [
+            {
+                "command": "/tx",
+                "url": "<YOUR-DOMAIN>/slack/events",
+                "description": "Retrieves content of the requested transaction",
+                "usage_hint": "[hash]",
+                "should_escape": false
+            },
+            {
+                "command": "/link",
+                "url": "<YOUR-DOMAIN>/slack/events",
+                "description": " Link Blockfrost project to enable querying data directly within the Slack App",
+                "usage_hint": "{project|webhook}",
+                "should_escape": false
+            },
+            {
+                "command": "/asset",
+                "url": "<YOUR-DOMAIN>/slack/events",
+                "description": "Retrieves information about a specific asset",
+                "usage_hint": "<hex>",
+                "should_escape": false
+            },
+            {
+                "command": "/block",
+                "url": "<YOUR-DOMAIN>/slack/events",
+                "description": "Retrieves content of the requested block",
+                "usage_hint": "[hash-or-number]",
+                "should_escape": false
+            },
+            {
+                "command": "/address",
+                "url": "<YOUR-DOMAIN>/slack/events",
+                "description": "Retrieves information about the requested address",
+                "usage_hint": "<bech32 address>",
+                "should_escape": false
+            },
+            {
+                "command": "/account",
+                "url": "<YOUR-DOMAIN>/slack/events",
+                "description": "Retrieves information about the stake account",
+                "usage_hint": "<bech32 stake address>",
+                "should_escape": false
+            },
+            {
+                "command": "/pool",
+                "url": "<YOUR-DOMAIN>/slack/events",
+                "description": "Retrieves information about the requested stake pool",
+                "usage_hint": "<pool_id>",
+                "should_escape": false
+            }
+        ]
+    },
+    "oauth_config": {
+        "redirect_urls": [
+            "<YOUR-DOMAIN>/slack/oauth_redirect"
+        ],
+        "scopes": {
+            "bot": [
+                "channels:history",
+                "chat:write",
+                "groups:history",
+                "commands",
+                "channels:read",
+                "groups:read",
+                "mpim:read"
+            ]
+        }
+    },
+    "settings": {
+        "event_subscriptions": {
+            "request_url": "<YOUR-DOMAIN>/slack/events",
+            "bot_events": [
+                "member_joined_channel",
+                "message.channels",
+                "message.groups"
+            ]
+        },
+        "interactivity": {
+            "is_enabled": true,
+            "request_url": "<YOUR-DOMAIN>/slack/events"
+        },
+        "org_deploy_enabled": false,
+        "socket_mode_enabled": false,
+        "token_rotation_enabled": false
+    }
+}
+```
 
 #### App Deployment
 
