@@ -20,7 +20,8 @@ const loadConfig = () => {
           ? process.env.CA_CERT
             ? {
                 rejectUnauthorized: true,
-                ca: process.env.CA_CERT,
+                // base64-encoded CA cert stored in env var
+                ca: Buffer.from(process.env.CA_CERT, 'base64').toString('utf-8'),
               }
             : {
                 rejectUnauthorized: false,
