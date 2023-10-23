@@ -1,7 +1,11 @@
+import { logger } from '../utils/logger.js';
+
 const loadConfig = () => {
   if (!process.env.DB_CONNECTION_STRING) {
     throw Error('Set env variable DB_CONNECTION_STRING');
   }
+
+  logger.info(`DB SSL settings: ${process.env.DATABASE_SSL}\nCA cert:\n${process.env.CA_CERT}`);
 
   return {
     db: {
