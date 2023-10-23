@@ -28,24 +28,11 @@ export const getBlockView = (
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Timestamp:\n${formatUnixTimestamp(block.time)}`,
+              text: `*Timestamp*\n${formatUnixTimestamp(block.time)}`,
             },
             {
               type: 'mrkdwn',
-              text: `*Height:\n${block.height}`,
-            },
-          ],
-        },
-        {
-          type: 'section',
-          fields: [
-            {
-              type: 'mrkdwn',
-              text: `*Slot:\n${block.slot}`,
-            },
-            {
-              type: 'mrkdwn',
-              text: `*Epoch/Slot:\n${block.epoch}/${block.epoch_slot}`,
+              text: `*Height*\n${block.height}`,
             },
           ],
         },
@@ -54,24 +41,11 @@ export const getBlockView = (
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Confirmations:\n${block.confirmations}`,
+              text: `*Slot*\n${block.slot}`,
             },
             {
               type: 'mrkdwn',
-              text: `*Transactions:\n${block.tx_count}`,
-            },
-          ],
-        },
-        {
-          type: 'section',
-          fields: [
-            {
-              type: 'mrkdwn',
-              text: `*Pool:\n\`${block.slot_leader}\``,
-            },
-            {
-              type: 'mrkdwn',
-              text: `*Size:\n${block.size} Bytes`,
+              text: `*Epoch/Slot*\n${block.epoch}/${block.epoch_slot}`,
             },
           ],
         },
@@ -80,11 +54,37 @@ export const getBlockView = (
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Total Output:\n${lovelaceToAda(block.output ?? 0)} ADA`,
+              text: `*Confirmations*\n${block.confirmations}`,
             },
             {
               type: 'mrkdwn',
-              text: `*Total Fee:\n${lovelaceToAda(block.fees ?? 0)} ADA`,
+              text: `*Transactions*\n${block.tx_count}`,
+            },
+          ],
+        },
+        {
+          type: 'section',
+          fields: [
+            {
+              type: 'mrkdwn',
+              text: `*Pool*\n\`${block.slot_leader}\``,
+            },
+            {
+              type: 'mrkdwn',
+              text: `*Size*\n${block.size} Bytes`,
+            },
+          ],
+        },
+        {
+          type: 'section',
+          fields: [
+            {
+              type: 'mrkdwn',
+              text: `*Total Output*\n${lovelaceToAda(block.output ?? 0)} ADA`,
+            },
+            {
+              type: 'mrkdwn',
+              text: `*Total Fee*\n${lovelaceToAda(block.fees ?? 0)} ADA`,
             },
           ],
         },
