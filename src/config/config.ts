@@ -12,11 +12,16 @@ const loadConfig = () => {
         : 5000,
       idleTimeoutMs: process.env.DB_IDLE_TIMEOUT ? Number(process.env.DB_IDLE_TIMEOUT) : 10000,
       ssl:
-        process.env.DB_SSL !== undefined
-          ? JSON.parse(process.env.DB_SSL)
-          : {
-              rejectUnauthorized: false,
-            },
+        process.env.DATABASE_SSL !== 'false'
+          ? process.env.CA_CERT
+            ? {
+                rejectUnauthorized: true,
+                ca: process.env.CA_CERT,
+              }
+            : {
+                rejectUnauthorized: false,
+              }
+          : false,
     },
   };
 };
