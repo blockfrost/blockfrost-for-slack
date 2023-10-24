@@ -95,17 +95,15 @@ export const formatInputs = (inputs: Responses['tx_content_utxo']['inputs'], jso
   } else {
     // JSON mode
     return [
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `*Inputs*\n\`\`\`${JSON.stringify(
-            inputs.map(input => truncateLongStrings(input)),
-            undefined,
-            2,
-          )}\`\`\``,
-        },
-      },
+      ...inputs.map((input, index) => {
+        return {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `*Input #${index + 1}*\n\`\`\`${JSON.stringify(input, undefined, 2)}\`\`\``,
+          },
+        };
+      }),
       {
         type: 'divider',
       },
@@ -173,17 +171,15 @@ export const formatOutputs = (
       .flat();
   } else {
     return [
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `*Outputs*\n\`\`\`${JSON.stringify(
-            outputs.map(output => truncateLongStrings(output)),
-            undefined,
-            2,
-          )}\`\`\``,
-        },
-      },
+      ...outputs.map((output, index) => {
+        return {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `*Output #${index + 1}*\n\`\`\`${JSON.stringify(output, undefined, 2)}\`\`\``,
+          },
+        };
+      }),
       {
         type: 'divider',
       },

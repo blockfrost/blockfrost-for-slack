@@ -113,7 +113,7 @@ export const registerTxCommand = (app: App<StringIndexed>) => {
 
       await say({ blocks: [...formattedOutputs] });
     } catch (error) {
-      const errorResponse = BlockfrostClient.handleError(error, 'no');
+      const errorResponse = BlockfrostClient.handleError(error, txHash);
 
       await say(errorResponse);
     }
