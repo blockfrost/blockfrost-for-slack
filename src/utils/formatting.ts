@@ -44,11 +44,11 @@ export const formatInputs = (inputs: Responses['tx_content_utxo']['inputs']) => 
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Tx Hash:\n\`${input.tx_hash}\``,
+              text: `*Tx Hash*\n\`${input.tx_hash}\``,
             },
             {
               type: 'mrkdwn',
-              text: `*Index:\n${input.output_index}`,
+              text: `*Index*\n${input.output_index}`,
             },
           ],
         },
@@ -56,7 +56,7 @@ export const formatInputs = (inputs: Responses['tx_content_utxo']['inputs']) => 
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `📘 *Address:\n\`${input.address}\``,
+            text: `📘 *Address*\n\`${input.address}\``,
           },
         },
         {
@@ -64,11 +64,11 @@ export const formatInputs = (inputs: Responses['tx_content_utxo']['inputs']) => 
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Amount:\n${amount} ADA`,
+              text: `*Amount*\n${amount} ADA`,
             },
             {
               type: 'mrkdwn',
-              text: `*Collateral:\n${input.collateral ? 'Yes' : 'No'}`,
+              text: `*Collateral*\n${input.collateral ? 'Yes' : 'No'}`,
             },
           ],
         },
@@ -80,7 +80,7 @@ export const formatInputs = (inputs: Responses['tx_content_utxo']['inputs']) => 
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `*Assets:\`\`\`${JSON.stringify(tokens, undefined, 2)}\`\`\``,
+            text: `*Assets*\n\`\`\`${JSON.stringify(tokens, undefined, 2)}\`\`\``,
           },
         });
       }
@@ -112,7 +112,7 @@ export const formatOutputs = (outputs: Responses['tx_content_utxo']['outputs']) 
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `📘 *Address:\n\`${output.address}\``,
+            text: `📘 *Address*\n\`${output.address}\``,
           },
         },
         {
@@ -120,11 +120,11 @@ export const formatOutputs = (outputs: Responses['tx_content_utxo']['outputs']) 
           fields: [
             {
               type: 'mrkdwn',
-              text: `*Amount:\n${amount} ADA`,
+              text: `*Amount*\n${amount} ADA`,
             },
             {
               type: 'mrkdwn',
-              text: `*Collateral:\n${output.collateral ? 'Yes' : 'No'}`,
+              text: `*Collateral*\n${output.collateral ? 'Yes' : 'No'}`,
             },
           ],
         },
@@ -136,7 +136,7 @@ export const formatOutputs = (outputs: Responses['tx_content_utxo']['outputs']) 
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `*Assets:\`\`\`${JSON.stringify(tokens, undefined, 2)}\`\`\``,
+            text: `*Assets*\n\`\`\`${JSON.stringify(tokens, undefined, 2)}\`\`\``,
           },
         });
       }
