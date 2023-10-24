@@ -76,8 +76,7 @@ export const registerTxCommand = (app: App<StringIndexed>) => {
       return;
     }
 
-    // TODO: jsonMode
-    const { txHash, network } = JSON.parse(action.value);
+    const { txHash, network, jsonMode } = JSON.parse(action.value);
     const bClient = await initializeBlockfrostClient(body, { network });
 
     if (!bClient) {
@@ -87,11 +86,10 @@ export const registerTxCommand = (app: App<StringIndexed>) => {
 
     try {
       const utxo = await bClient.getTxUtxo(txHash);
-      const formattedInputs = formatInputs(utxo.inputs);
-      const formattedOutputs = formatOutputs(utxo.outputs);
+      const formattedInputs = formatInputs(utxo.inputs, jsonMode);
+      const formattedOutputs = formatOutputs(utxo.outputs, jsonMode);
       // Slack limits the number of blocks that can be send at once to 50.
       // For now we split the inputs and outputs to separate messages.
-      // TODO: Handle large transaction with more than 50 inputs or outputs
 
       await say({
         blocks: [
