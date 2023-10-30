@@ -13,6 +13,7 @@ import { registerWelcomeMessage } from './events/welcome-message.js';
 import { registerWebhookEndpoint } from './events/webhook-endpoint.js';
 import { registerAccountCommand } from './commands/account/account.js';
 import { registerPoolCommand } from './commands/pool/pool.js';
+import { registerBlockfrostHelpCommand } from './commands/blockfrost-help/blockfrost-help.js';
 const { App, ExpressReceiver, LogLevel } = bolt;
 
 if (!process.env.SLACK_SIGNING_SECRET) {
@@ -58,6 +59,7 @@ registerBlockCommand(app);
 registerAddressCommand(app);
 registerAccountCommand(app);
 registerPoolCommand(app);
+registerBlockfrostHelpCommand(app);
 
 registerWelcomeMessage(app);
 registerWebhookEndpoint(expressReceiver);

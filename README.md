@@ -214,58 +214,65 @@ To speed up your setup process, simply copy and paste the following JSON into th
         "slash_commands": [
             {
                 "command": "/tx",
-                "url": "<YOUR-DOMAIN>/slack/events",
+                "url": "https://slack-integration.blockfrost.io/slack/events",
                 "description": "Retrieves content of the requested transaction",
                 "usage_hint": "[hash]",
                 "should_escape": false
             },
             {
                 "command": "/link",
-                "url": "<YOUR-DOMAIN>/slack/events",
+                "url": "https://slack-integration.blockfrost.io/slack/events",
                 "description": " Link Blockfrost project to enable querying data directly within the Slack App",
                 "usage_hint": "{project|webhook}",
                 "should_escape": false
             },
             {
                 "command": "/asset",
-                "url": "<YOUR-DOMAIN>/slack/events",
+                "url": "https://slack-integration.blockfrost.io/slack/events",
                 "description": "Retrieves information about a specific asset",
                 "usage_hint": "<hex>",
                 "should_escape": false
             },
             {
                 "command": "/block",
-                "url": "<YOUR-DOMAIN>/slack/events",
+                "url": "https://slack-integration.blockfrost.io/slack/events",
                 "description": "Retrieves content of the requested block",
                 "usage_hint": "[hash-or-number]",
                 "should_escape": false
             },
             {
                 "command": "/address",
-                "url": "<YOUR-DOMAIN>/slack/events",
+                "url": "https://slack-integration.blockfrost.io/slack/events",
                 "description": "Retrieves information about the requested address",
                 "usage_hint": "<bech32 address>",
                 "should_escape": false
             },
             {
                 "command": "/account",
-                "url": "<YOUR-DOMAIN>/slack/events",
+                "url": "https://slack-integration.blockfrost.io/slack/events",
                 "description": "Retrieves information about the stake account",
                 "usage_hint": "<bech32 stake address>",
                 "should_escape": false
             },
             {
                 "command": "/pool",
-                "url": "<YOUR-DOMAIN>/slack/events",
+                "url": "https://slack-integration.blockfrost.io/slack/events",
                 "description": "Retrieves information about the requested stake pool",
                 "usage_hint": "<pool_id>",
+                "should_escape": false
+            },
+            {
+                "command": "/blockfrost",
+                "url": "https://slack-integration.blockfrost.io/slack/events",
+                "description": "Show help",
+                "usage_hint": "help",
                 "should_escape": false
             }
         ]
     },
     "oauth_config": {
         "redirect_urls": [
-            "<YOUR-DOMAIN>/slack/oauth_redirect"
+            "https://slack-integration.blockfrost.io/slack/oauth_redirect"
         ],
         "scopes": {
             "bot": [
@@ -281,7 +288,7 @@ To speed up your setup process, simply copy and paste the following JSON into th
     },
     "settings": {
         "event_subscriptions": {
-            "request_url": "<YOUR-DOMAIN>/slack/events",
+            "request_url": "https://slack-integration.blockfrost.io/slack/events",
             "bot_events": [
                 "member_joined_channel",
                 "message.channels",
@@ -290,7 +297,7 @@ To speed up your setup process, simply copy and paste the following JSON into th
         },
         "interactivity": {
             "is_enabled": true,
-            "request_url": "<YOUR-DOMAIN>/slack/events"
+            "request_url": "https://slack-integration.blockfrost.io/slack/events"
         },
         "org_deploy_enabled": false,
         "socket_mode_enabled": false,
