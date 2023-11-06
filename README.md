@@ -169,6 +169,15 @@ Once configured, any event meeting the criteria will automatically post notifica
 
 ## Installation
 
+There are several methods to install the Blockfrost for Slack app.
+
+### Manual installation of the hosted app
+
+We are running hosted version of this app on https://slack-integration.blockfrost.io.
+
+1. Navigate to https://slack-integration.blockfrost.io/slack/install
+2. Click the "Install" or "Add to Slack" button.
+
 ### Blockfrost for Slack from Slack app directory
 
 This let's you install the app running on our servers. It's the quickest way to start!
