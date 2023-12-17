@@ -2,6 +2,10 @@
 
 Blockfrost for Slack is a toolkit for interacting with blockchain data, perfect for Cardano developers, crypto enthusiasts, and corporate teams who spent their day on Slack. The integration offers a set of slash commands that turn your Slack workspace into a versatile Cardano query terminal. Instantly query blockchain data such as assets, addresses, stake accounts, blocks, and transactions or utilize webhooks to receive real-time notifications.
 
+![Slack for Blockfrost](.github/imgs/general.png)
+
+![Blocks](.github/imgs/block.png)
+
 ## Available commands
 
 Here's quick overview of available commands:
