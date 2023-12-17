@@ -214,7 +214,7 @@ To speed up your setup process, simply copy and paste the following JSON into th
 
 > Note: You need to replace `<YOUR-DOMAIN>` with the domain where you deployed the app.
 
-```
+```json
 {
     "display_information": {
         "name": "Blockfrost for Slack"
