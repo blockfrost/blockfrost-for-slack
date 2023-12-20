@@ -1,3 +1,5 @@
+<a href="https://slack.com/oauth/v2/authorize?client_id=1345969366833.6006936654448&scope=channels:history,chat:write,groups:history,commands,channels:read,groups:read,mpim:read&user_scope="><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" align="right"/></a>
+
 # Blockfrost for Slack
 
 Blockfrost for Slack is a toolkit for interacting with blockchain data, perfect for Cardano developers, crypto enthusiasts, and corporate teams who spent their day on Slack. The integration offers a set of slash commands that turn your Slack workspace into a versatile Cardano query terminal. Instantly query blockchain data such as assets, addresses, stake accounts, blocks, and transactions or utilize webhooks to receive real-time notifications.
