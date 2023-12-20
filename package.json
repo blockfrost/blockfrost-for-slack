@@ -13,6 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "@blockfrost/blockfrost-js": "^6.0.0-beta.0",
+    "@sentry/integrations": "^7.89.0",
+    "@sentry/node": "^7.89.0",
     "@slack/bolt": "^3.14.0",
     "@slack/logger": "^4.0.0",
     "@slack/web-api": "^6.9.0",

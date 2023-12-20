@@ -25,4 +25,4 @@ export function getLogger(name: string, level: LogLevel, existingLogger?: Logger
   return logger;
 }
 
-export const logger = getLogger('default', LogLevel.INFO);
+export const logger = getLogger('default', process.env.DEBUG ? LogLevel.DEBUG : LogLevel.INFO);

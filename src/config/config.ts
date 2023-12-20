@@ -28,6 +28,9 @@ const loadConfig = () => {
               }
           : false,
     },
+    sentry: {
+      dsn: process.env.SENTRY_DSN,
+    },
   };
 };
 

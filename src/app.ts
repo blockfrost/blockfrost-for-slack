@@ -15,6 +15,7 @@ import { registerAccountCommand } from './commands/account/account.js';
 import { registerPoolCommand } from './commands/pool/pool.js';
 import { registerBlockfrostHelpCommand } from './commands/blockfrost-help/blockfrost-help.js';
 import { registerRootEndpoint } from './endpoints/index.js';
+import { logger } from './utils/logger.js';
 const { App, ExpressReceiver, LogLevel } = bolt;
 
 const port = Number(process.env.PORT) || 3000;
@@ -43,7 +44,9 @@ const expressReceiver = new ExpressReceiver({
     // Welcome message after adding user to a private channel
     // 'groups:read',
   ],
-  installationStore: new BlockfrostInstallationStore(),
+  installationStore: new BlockfrostInstallationStore({
+    logger: logger,
+  }),
 });
 
 const app = new App({
