@@ -50,9 +50,15 @@ class DBStore {
   };
 
   deleteInstallation = async (installationId: string) => {
-    await this.client.none(`DELETE FROM slack_installations WHERE installation_id = $1`, [
-      installationId,
-    ]);
+    await this.client.tx(async t => {
+      await t.none(`DELETE FROM slack_linked_projects WHERE installation_id = $1`, [
+        installationId,
+      ]);
+      await t.none(`DELETE FROM slack_linked_webhooks WHERE installation_id = $1`, [
+        installationId,
+      ]);
+      await t.none(`DELETE FROM slack_installations WHERE installation_id = $1`, [installationId]);
+    });
   };
 
   registerProjectId = async (installationId: string, projectId: string) => {
