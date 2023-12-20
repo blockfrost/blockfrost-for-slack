@@ -211,6 +211,7 @@ We need to subscribe to following events types
 - `message.channels` - listens for messages in public channels that the app is added to
 - `message.groups` - listens for messages in private channels that the app is added to
 - `member_joined_channel` - sent when an user joins a channel, used for sending welcome message after adding the app to a channel
+- `app_uninstalled` - sent when an user removes the app from the workspace, used for removing installation data from the database
 
 To speed up your setup process, simply copy and paste the following JSON into the App Manifest. This action will auto-configure OAuth, event subscriptions, and slash commands for you.
 
@@ -218,106 +219,100 @@ To speed up your setup process, simply copy and paste the following JSON into th
 
 ```json
 {
-    "display_information": {
-        "name": "Blockfrost for Slack"
+  "display_information": {
+    "name": "Blockfrost for Slack"
+  },
+  "features": {
+    "bot_user": {
+      "display_name": "Blockfrost for Slack",
+      "always_online": false
     },
-    "features": {
-        "bot_user": {
-            "display_name": "Blockfrost for Slack",
-            "always_online": false
-        },
-        "slash_commands": [
-            {
-                "command": "/tx",
-                "url": "https://slack-integration.blockfrost.io/slack/events",
-                "description": "Retrieves content of the requested transaction",
-                "usage_hint": "[hash]",
-                "should_escape": false
-            },
-            {
-                "command": "/link",
-                "url": "https://slack-integration.blockfrost.io/slack/events",
-                "description": " Link Blockfrost project to enable querying data directly within the Slack App",
-                "usage_hint": "{project|webhook}",
-                "should_escape": false
-            },
-            {
-                "command": "/asset",
-                "url": "https://slack-integration.blockfrost.io/slack/events",
-                "description": "Retrieves information about a specific asset",
-                "usage_hint": "<hex>",
-                "should_escape": false
-            },
-            {
-                "command": "/block",
-                "url": "https://slack-integration.blockfrost.io/slack/events",
-                "description": "Retrieves content of the requested block",
-                "usage_hint": "[hash-or-number]",
-                "should_escape": false
-            },
-            {
-                "command": "/address",
-                "url": "https://slack-integration.blockfrost.io/slack/events",
-                "description": "Retrieves information about the requested address",
-                "usage_hint": "<bech32 address>",
-                "should_escape": false
-            },
-            {
-                "command": "/account",
-                "url": "https://slack-integration.blockfrost.io/slack/events",
-                "description": "Retrieves information about the stake account",
-                "usage_hint": "<bech32 stake address>",
-                "should_escape": false
-            },
-            {
-                "command": "/pool",
-                "url": "https://slack-integration.blockfrost.io/slack/events",
-                "description": "Retrieves information about the requested stake pool",
-                "usage_hint": "<pool_id>",
-                "should_escape": false
-            },
-            {
-                "command": "/blockfrost",
-                "url": "https://slack-integration.blockfrost.io/slack/events",
-                "description": "Show help",
-                "usage_hint": "help",
-                "should_escape": false
-            }
-        ]
-    },
-    "oauth_config": {
-        "redirect_urls": [
-            "https://slack-integration.blockfrost.io/slack/oauth_redirect"
-        ],
-        "scopes": {
-            "bot": [
-                "channels:history",
-                "chat:write",
-                "groups:history",
-                "commands",
-                "channels:read",
-                "groups:read",
-                "mpim:read"
-            ]
-        }
-    },
-    "settings": {
-        "event_subscriptions": {
-            "request_url": "https://slack-integration.blockfrost.io/slack/events",
-            "bot_events": [
-                "member_joined_channel",
-                "message.channels",
-                "message.groups"
-            ]
-        },
-        "interactivity": {
-            "is_enabled": true,
-            "request_url": "https://slack-integration.blockfrost.io/slack/events"
-        },
-        "org_deploy_enabled": false,
-        "socket_mode_enabled": false,
-        "token_rotation_enabled": false
+    "slash_commands": [
+      {
+        "command": "/tx",
+        "url": "https://slack-integration.blockfrost.io/slack/events",
+        "description": "Retrieves content of the requested transaction",
+        "usage_hint": "[hash]",
+        "should_escape": false
+      },
+      {
+        "command": "/link",
+        "url": "https://slack-integration.blockfrost.io/slack/events",
+        "description": " Link Blockfrost project to enable querying data directly within the Slack App",
+        "usage_hint": "{project|webhook}",
+        "should_escape": false
+      },
+      {
+        "command": "/asset",
+        "url": "https://slack-integration.blockfrost.io/slack/events",
+        "description": "Retrieves information about a specific asset",
+        "usage_hint": "<hex>",
+        "should_escape": false
+      },
+      {
+        "command": "/block",
+        "url": "https://slack-integration.blockfrost.io/slack/events",
+        "description": "Retrieves content of the requested block",
+        "usage_hint": "[hash-or-number]",
+        "should_escape": false
+      },
+      {
+        "command": "/address",
+        "url": "https://slack-integration.blockfrost.io/slack/events",
+        "description": "Retrieves information about the requested address",
+        "usage_hint": "<bech32 address>",
+        "should_escape": false
+      },
+      {
+        "command": "/account",
+        "url": "https://slack-integration.blockfrost.io/slack/events",
+        "description": "Retrieves information about the stake account",
+        "usage_hint": "<bech32 stake address>",
+        "should_escape": false
+      },
+      {
+        "command": "/pool",
+        "url": "https://slack-integration.blockfrost.io/slack/events",
+        "description": "Retrieves information about the requested stake pool",
+        "usage_hint": "<pool_id>",
+        "should_escape": false
+      },
+      {
+        "command": "/blockfrost",
+        "url": "https://slack-integration.blockfrost.io/slack/events",
+        "description": "Show help",
+        "usage_hint": "help",
+        "should_escape": false
+      }
+    ]
+  },
+  "oauth_config": {
+    "redirect_urls": ["https://slack-integration.blockfrost.io/slack/oauth_redirect"],
+    "scopes": {
+      "bot": [
+        "channels:history",
+        "chat:write",
+        "groups:history",
+        "commands",
+        "channels:read",
+        "groups:read",
+        "mpim:read"
+      ]
     }
+  },
+  "settings": {
+    "event_subscriptions": {
+      "request_url": "https://slack-integration.blockfrost.io/slack/events",
+      "bot_events": ["member_joined_channel", "message.channels", "message.groups"]
+    },
+    "interactivity": {
+      "is_enabled": true,
+      "request_url": "https://slack-integration.blockfrost.io/slack/events"
+    },
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": false,
+    "token_rotation_enabled": false
+  }
 }
 ```
 

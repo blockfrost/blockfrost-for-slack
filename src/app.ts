@@ -17,6 +17,7 @@ import { registerBlockfrostHelpCommand } from './commands/blockfrost-help/blockf
 import { registerRootEndpoint } from './endpoints/index.js';
 import { logger } from './utils/logger.js';
 import { initializeSentry } from './utils/sentry.js';
+import { registerAppUninstalledEvent } from './events/app-uninstalled.js';
 const { App, ExpressReceiver, LogLevel } = bolt;
 
 const port = Number(process.env.PORT) || 3000;
@@ -69,6 +70,7 @@ registerPoolCommand(app);
 registerBlockfrostHelpCommand(app);
 
 registerWelcomeMessage(app);
+registerAppUninstalledEvent(app);
 registerWebhookEndpoint(expressReceiver);
 registerRootEndpoint(expressReceiver);
 
