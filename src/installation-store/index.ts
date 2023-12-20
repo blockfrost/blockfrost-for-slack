@@ -9,15 +9,15 @@ export default class BlockfrostInstallationStore implements InstallationStore {
     this.logger = options.logger;
   }
 
-  public async storeInstallation(installation: Installation, logger?: Logger): Promise<void> {
+  public async storeInstallation(installation: Installation): Promise<void> {
     if (installation.isEnterpriseInstall && installation.enterprise !== undefined) {
       // handle storing org-wide app installation
-      logger?.debug(`storing org installation ${installation.enterprise.id}`);
+      this.logger?.debug(`storing org installation ${installation.enterprise.id}`);
       return await dbStore.storeInstallation(installation.enterprise.id, installation);
     }
     if (installation.team !== undefined) {
       // single team app installation
-      logger?.debug(`storing single team installation ${installation.team.id}`);
+      this.logger?.debug(`storing single team installation ${installation.team.id}`);
 
       return await dbStore.storeInstallation(installation.team.id, installation);
     } else {
@@ -27,10 +27,9 @@ export default class BlockfrostInstallationStore implements InstallationStore {
 
   public async fetchInstallation(
     installQuery: InstallationQuery<boolean>,
-    logger?: Logger,
   ): Promise<Installation<'v1' | 'v2'>> {
     if (installQuery.isEnterpriseInstall && installQuery.enterpriseId !== undefined) {
-      logger?.debug(`fetching org installation ${installQuery.enterpriseId}`);
+      this.logger?.debug(`fetching org installation ${installQuery.enterpriseId}`);
       const installation = await dbStore.fetchInstallation(installQuery.enterpriseId);
 
       if (!installation) {
@@ -39,7 +38,7 @@ export default class BlockfrostInstallationStore implements InstallationStore {
       return installation;
     }
     if (installQuery.teamId !== undefined) {
-      logger?.debug(`fetching single team installation ${installQuery.teamId}`);
+      this.logger?.debug(`fetching single team installation ${installQuery.teamId}`);
       const installation = await dbStore.fetchInstallation(installQuery.teamId);
 
       if (!installation) {
@@ -50,16 +49,13 @@ export default class BlockfrostInstallationStore implements InstallationStore {
     throw new Error('Failed fetching installation');
   }
 
-  public async deleteInstallation(
-    installQuery: InstallationQuery<boolean>,
-    logger?: Logger,
-  ): Promise<void> {
+  public async deleteInstallation(installQuery: InstallationQuery<boolean>): Promise<void> {
     if (installQuery.isEnterpriseInstall && installQuery.enterpriseId !== undefined) {
-      logger?.debug(`deleting org installation ${installQuery.enterpriseId}`);
+      this.logger?.debug(`deleting org installation ${installQuery.enterpriseId}`);
       return await dbStore.deleteInstallation(installQuery.enterpriseId);
     }
     if (installQuery.teamId !== undefined) {
-      logger?.debug(`deleting single team installation ${installQuery.teamId}`);
+      this.logger?.debug(`deleting single team installation ${installQuery.teamId}`);
       return await dbStore.deleteInstallation(installQuery.teamId);
     } else {
       throw new Error('Failed to delete installation');
