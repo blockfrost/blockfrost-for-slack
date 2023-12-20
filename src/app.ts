@@ -10,11 +10,14 @@ import { registerLinkCommand } from './commands/link/link.js';
 import { registerBlockCommand } from './commands/block/block.js';
 import { registerAddressCommand } from './commands/address/address.js';
 import { registerWelcomeMessage } from './events/welcome-message.js';
-import { registerWebhookEndpoint } from './events/webhook-endpoint.js';
+import { registerWebhookEndpoint } from './endpoints/webhook-endpoint.js';
 import { registerAccountCommand } from './commands/account/account.js';
 import { registerPoolCommand } from './commands/pool/pool.js';
 import { registerBlockfrostHelpCommand } from './commands/blockfrost-help/blockfrost-help.js';
+import { registerRootEndpoint } from './endpoints/index.js';
 const { App, ExpressReceiver, LogLevel } = bolt;
+
+const port = Number(process.env.PORT) || 3000;
 
 if (!process.env.SLACK_SIGNING_SECRET) {
   throw Error('Set env variable SLACK_SIGNING_SECRET');
@@ -63,10 +66,11 @@ registerBlockfrostHelpCommand(app);
 
 registerWelcomeMessage(app);
 registerWebhookEndpoint(expressReceiver);
+registerRootEndpoint(expressReceiver);
 
 (async () => {
   // Start your app
-  await app.start(Number(process.env.PORT) || 3000);
+  await app.start(port);
 
-  console.log('⚡️ Bolt app is running!');
+  console.log(`⚡️ Blockfrost for Slack is running on port ${port}!`);
 })();

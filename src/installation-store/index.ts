@@ -55,11 +55,11 @@ export default class BlockfrostInstallationStore implements InstallationStore {
     }
 
     if (installQuery.isEnterpriseInstall && installQuery.enterpriseId !== undefined) {
-      logger?.debug('deleting org installation');
+      logger?.debug(`deleting org installation ${installQuery.enterpriseId}`);
       return await dbStore.deleteInstallation(installQuery.enterpriseId);
     }
     if (installQuery.teamId !== undefined) {
-      logger?.debug('deleting single team installation');
+      logger?.debug(`deleting single team installation ${installQuery.teamId}`);
       return await dbStore.deleteInstallation(installQuery.teamId);
     } else {
       throw new Error('Failed to delete installation');
