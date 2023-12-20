@@ -32,9 +32,11 @@ class DBStore {
   }
 
   storeInstallation = async (installationId: string, installation: Installation<'v1' | 'v2'>) => {
-    // TODO: Upsert if installation_id already exist
     await this.client.none(
-      `INSERT INTO slack_installations(installation_id, installation_data) VALUES($1, $2:json)`,
+      `INSERT INTO slack_installations(installation_id, installation_data) 
+       VALUES($1, $2:json) 
+       ON CONFLICT (installation_id) 
+       DO UPDATE SET installation_data = EXCLUDED.installation_data`,
       [installationId, installation],
     );
   };
